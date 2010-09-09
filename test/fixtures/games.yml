@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  creator_id: 1
+  time_limit: 2010-09-08 21:53:55
+  security: false
+  capture_limit: 1
+  start_time: 2010-09-08 21:53:55
+
+two:
+  creator_id: 1
+  time_limit: 2010-09-08 21:53:55
+  security: false
+  capture_limit: 1
+  start_time: 2010-09-08 21:53:55

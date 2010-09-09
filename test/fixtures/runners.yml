@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  mobile_number: 
+  team_id: 1
+
+two:
+  mobile_number: 
+  team_id: 1
