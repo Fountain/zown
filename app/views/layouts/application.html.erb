@@ -7,7 +7,9 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-
+	<!-- Required by Devise -->
+	<p class="notice"><%= notice %></p>
+	<p class="alert"><%= alert %></p>
 <%= yield %>
 
 </body>
