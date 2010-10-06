@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100909024655) do
+ActiveRecord::Schema.define(:version => 20101006003150) do
 
   create_table "captures", :force => true do |t|
     t.integer  "game_id"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20100909024655) do
     t.datetime "updated_at"
   end
 
-  create_table "clusters_nodes", :force => true do |t|
+  create_table "clusters_nodes", :id => false, :force => true do |t|
     t.integer "node_id"
     t.integer "cluster_id"
   end
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20100909024655) do
     t.text     "code_list"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "game_id"
   end
 
   create_table "runners", :force => true do |t|
