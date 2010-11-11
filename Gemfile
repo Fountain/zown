@@ -27,6 +27,8 @@ gem 'twiliolib', '2.0.5'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'ruby-debug'
+
   # Cucumber stuff
   gem 'capybara'
   gem 'database_cleaner'

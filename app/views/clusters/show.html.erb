@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+Size: <%= @cluster.nodes.size %>
+<br />
+<% @cluster.nodes.each do |node| %>
+<%= node.name %>
+<% end %>
+<br />
+
+
+<%= link_to 'Edit', edit_cluster_path(@cluster) %> |
+<%= link_to 'Back', clusters_path %>

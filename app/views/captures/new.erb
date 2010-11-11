@@ -1,0 +1,10 @@
+<h3>zown capture</h3>
+<% form_for @capture do |f| %>
+	<%= f.label :mobile_numer, 'Mobile #'%>:
+	<%= text_field :runner, :mobile_number %>
+	<br />
+	<%= f.label :code, 'Code #'%>:
+	<%= text_field :node, :code %>
+	<br />
+	<%= f.submit %>
+<% end %>

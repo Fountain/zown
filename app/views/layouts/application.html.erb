@@ -7,10 +7,12 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
+	<div id="content">
 	<!-- Required by Devise -->
 	<p class="notice"><%= notice %></p>
 	<p class="alert"><%= alert %></p>
 <%= yield %>
+	</div>
 
 </body>
 </html>

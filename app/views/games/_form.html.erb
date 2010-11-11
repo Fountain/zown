@@ -1,0 +1,37 @@
+<%= form_for(@game) do |f| %>
+  <% if @game.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
+
+      <ul>
+      <% @game.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	<%= f.label :creator_id %>:
+	<%= f.text_field :creator_id %><br />
+
+	<%= f.label :time_limit %>:
+	<%= f.text_field :time_limit %><br />
+	
+	<%= f.label :capture_limit %>:
+	<%= f.text_field :capture_limit %><br />
+
+	<%= f.label :security %>:
+	<%= f.check_box :security %><br />
+	
+	<% if @game.new_record? %>
+		<%= f.label :clusters %>
+		<%= f.collection_select :cluster_ids, Cluster.all, :id, :name, {}, :multiple => true %>
+	<% else %>
+		<%= f.label :nodes %>
+		<%= f.collection_select :node_ids, Node.all, :id, :name, {}, :multiple => true %>	
+	<% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

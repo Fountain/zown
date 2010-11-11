@@ -1,0 +1,10 @@
+<p id="notice"><%= notice %></p>
+Size: <%= @node.codes.size %>
+<br />
+<% @node.codes.each do |code| %>
+<%= code.contents %>
+<% end %>
+<br />
+
+<%= link_to 'Edit', edit_node_path(@node) %> |
+<%= link_to 'Back', nodes_path %>

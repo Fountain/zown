@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+Number of Teams: <%= @game.teams.size %><br/>
+Size: <%= @game.nodes.size %>
+<br />
+<% @game.nodes.each do |node| %>
+<%= node.name %>
+<% end %>
+<br />
+
+<%= link_to 'Edit', edit_game_path(@game) %> |
+<%= link_to 'Back', games_path %>
