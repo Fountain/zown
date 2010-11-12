@@ -44,7 +44,11 @@ class Node < ActiveRecord::Base
       # add to array
       numbers << num_str
     end
-    
     numbers
+  end
+  
+  def current_owner
+    capture = self.captures.order("created_at").first 
+    capture.team if capture
   end
 end

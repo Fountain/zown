@@ -10,3 +10,8 @@ h3 {
 	margin: 0 0 1em 0;
 	padding: 0;
 }
+
+#footer {
+	margin: auto;
+	width: 500px;
+}

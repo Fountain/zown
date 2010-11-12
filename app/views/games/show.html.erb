@@ -3,13 +3,16 @@
 Number of Teams: <%= @game.teams.size %><br/>
 Size: <%= @game.nodes.size %>
 <br />
-<% @game.nodes.each do |node| %>
 Nodes: 
-<%= node.name %>
+<% @game.nodes.each do |node| %>
+<%= node.name %> | <%= node.current_owner.id  if node.current_owner %>
 <% end %>
 <br /> Start Time: <%= @game.start_time %>
+<br /> End Time: <%= @game.end_time %>
 <br /> Size: <%= @game.captures.size %>
 <br />
+
+
 
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>

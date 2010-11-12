@@ -18,7 +18,7 @@ class Game < ActiveRecord::Base
   end
   
   def end_time
-    self.start_time + self.time_limit if self.start_time and self.time_limit
+    self.start_time + self.time_limit.minutes if self.start_time and self.time_limit
   end
   
   def is_active?

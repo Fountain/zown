@@ -2,6 +2,7 @@ class Capture < ActiveRecord::Base
   belongs_to :node
   belongs_to :runner
   belongs_to :game
+  has_one :team, :through => :runner
   
   before_save :start_game_if_not_started
   
