@@ -3,9 +3,7 @@ class Game < ActiveRecord::Base
   has_many :teams
   has_many :nodes
   has_many :runners, :through => :teams
-  
-  attr_accessor :team_number
-  
+    
   # MAX_NUMBER_OF_TEAMS = 2
   
   def start!

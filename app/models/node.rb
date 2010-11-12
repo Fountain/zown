@@ -2,7 +2,7 @@ class Node < ActiveRecord::Base
   has_many :captures
   has_and_belongs_to_many :clusters
   belongs_to :game
-  has_many :codes
+  has_many :codes, :dependent => :destroy
   
   after_create :assign_codes
   
