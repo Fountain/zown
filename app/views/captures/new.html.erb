@@ -1,7 +1,11 @@
 <h3>zown capture</h3>
+
+<% @capture.errors.full_messages.each do |msg| %>
+	<p><%= msg %></p>
+<% end %>
 <% form_for @capture do |f| %>
 	<%= f.label :mobile_numer, 'Mobile #'%>:
-	<%= text_field :runner, :mobile_number %>
+	<%= phone_field :runner, :mobile_number %>
 	<br />
 	<%= f.label :code, 'Code #'%>:
 	<%= text_field :node, :code %>

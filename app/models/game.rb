@@ -52,4 +52,8 @@ class Game < ActiveRecord::Base
       self.nodes << cluster.nodes
     end
   end
+  
+  def first_capture?
+    self.captures.empty?
+  end
 end
