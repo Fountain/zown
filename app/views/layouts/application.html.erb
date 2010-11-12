@@ -8,11 +8,11 @@
 </head>
 <body>
 	<div id="content">
-	<!-- Required by Devise -->
-	<p class="notice"><%= notice %></p>
-	<p class="alert"><%= alert %></p>
-<%= yield %>
+		<!-- Required by Devise -->
+		<p class="notice"><%= notice %></p>
+		<p class="alert"><%= alert %></p>
+		<%= yield %>
+		<%= render :partial => "layouts/footer" %>
 	</div>
-
 </body>
 </html>
