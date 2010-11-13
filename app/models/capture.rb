@@ -22,8 +22,7 @@ class Capture < ActiveRecord::Base
   def start_game_if_not_started
     game = self.game
     if game.is_active? && game.first_capture? 
-      game.start_time = Time.now
-      game.save
+      game.start!
     end
   end
   

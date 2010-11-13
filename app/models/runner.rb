@@ -5,10 +5,8 @@ class Runner < ActiveRecord::Base
   
 #  validates_format_of :mobile_number, :with => /^(?:(\d)[ \-\.]?)?(?:\(?(\d{3})\)?[ \-\.])?(\d{3})[ \-\.](\d{4})(?: ?x?(\d+))?$/
   
-  def assign_to_smallest_team!
-    game = Game.active_game    
+  def assign_to_smallest_team(game)    
     self.team = game.smallest_team
-    self.save     
   end
   
 end

@@ -102,5 +102,4 @@ Feature: Game
 	Scenario: Create new Node
 		Given I am a captain
 		When I create a new Node
-		Then a new code set is assigned to that Node
-		
+		Then a new code set is assigned to that Node		

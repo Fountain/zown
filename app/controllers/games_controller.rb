@@ -2,6 +2,28 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.xml
   
+  
+  def join
+    @game = Game.find params[:id]
+  end
+  
+  def join_game
+    @game = Game.find params[:id]
+    @runner = Runner.find_or_create_by_mobile_number params[:runner][:mobile_number]
+    # @runner.game = @game
+    @runner.assign_to_smallest_team(@game)
+    respond_to do |format|
+    
+    # assign runner to smallest team
+    if @runner.save
+        format.html { redirect_to(capture_path, :notice => "Game was successfully joined. You are on team #{@runner.team}") }
+      else
+        format.html { render :action => "join" }
+      end
+    end
+    # TODO send confirmation
+  end
+  
   def balance_games
     # get the total of each team
     # remove a Runner from the team with the most Runners
@@ -22,7 +44,7 @@ class GamesController < ApplicationController
   end
   
   def index
-    @games = Game.all
+    @games = Game.order("created_at DESC").all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -60,8 +82,7 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.xml
   def create
-    @game = Game.new(params[:game])    
-    @game.teams = [Team.create, Team.create]
+    @game = Game.new(params[:game])
     
     respond_to do |format|
       if @game.save

@@ -8,6 +8,29 @@ class Node < ActiveRecord::Base
   
   CODE_COUNT = 100
   
+  def cumulative_time
+    # get all captures with in the current game 
+    captures = self.captures.where :game_id => self.game.id
+    # create a time holder for each team
+    times = {}
+    self.game.teams.each {|team| times[team] = 0 }
+    # go through each capture
+    last_capture = nil
+    captures.each_with_index do |capture, i| 
+      # unless this is the first time this node has been captured
+      unless last_capture.nil?        
+        # find the difference between the current capture and the last
+        diff = capture.created_at - last_capture.created_at
+        # add that difference to the previous owner's cumulative time
+        team = last_capture.team
+        times[team] += diff
+      end
+      last_capture = capture
+    end
+    # return the total for the requested team
+    times
+  end
+  
   def self.find_by_code(contents)
     code = Code.find_by_contents(contents)
     code.node if code
@@ -48,7 +71,7 @@ class Node < ActiveRecord::Base
   end
   
   def current_owner
-    capture = self.captures.order("created_at").first 
+    capture = self.captures.order("created_at").last 
     capture.team if capture
   end
 end

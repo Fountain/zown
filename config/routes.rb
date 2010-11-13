@@ -1,8 +1,14 @@
 Zown::Application.routes.draw do
-  resources :games
+  resources :games do
+    member do
+     get :join
+     put :join_game 
+    end
+  end
   resources :captures
   resources :nodes
   resources :clusters
+  resources :runners
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -10,7 +16,7 @@ Zown::Application.routes.draw do
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   match 'capture' => 'captures#new'
-  
+    
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:

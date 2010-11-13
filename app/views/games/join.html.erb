@@ -1,0 +1,6 @@
+Would you like to join the current game?
+<% form_for @game, :url => {:action => 'join_game'} do |f| %>
+	<%= label :runner, :mobile_number %>
+	<%= text_field :runner, :mobile_number %>
+	<%= f.submit 'yes'%>
+<% end %>

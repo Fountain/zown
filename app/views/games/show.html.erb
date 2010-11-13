@@ -1,16 +1,29 @@
 <p id="notice"><%= notice %></p>
 
 Number of Teams: <%= @game.teams.size %><br/>
-Size: <%= @game.nodes.size %>
-<br />
-Nodes: 
+Total Nodes: <%= @game.nodes.size %>
+<br /><br />
+Nodes: <br />
 <% @game.nodes.each do |node| %>
-<%= node.name %> | <%= node.current_owner.id  if node.current_owner %>
+<%= node.name %> | Controlling Team: <%= node.current_owner %> | <br />
 <% end %>
 <br /> Start Time: <%= @game.start_time %>
 <br /> End Time: <%= @game.end_time %>
-<br /> Size: <%= @game.captures.size %>
-<br />
+<br /> Total Captures: <%= @game.captures.size %><br />
+<br /> Cumulative Team times:<br />
+<% @game.cumulative_team_times.each do |team, time| %>
+	<%= team %>: <%= time.to_i %> seconds<br>
+<% end %>
+<strong>Winning Team: <%= @game.winning_team %></strong>
+<br /><br />
+
+<% @game.teams.each do |team| %>
+	<%= team %> Runners:<br />
+	<% team.runners.each do |runner| %>
+		<%= runner.mobile_number %> | <%= runner.captures.size %> <br />
+	<% end %>
+	<br />
+<% end %>
 
 
 
