@@ -1,4 +1,4 @@
-<h1>Listing games</h1>
+<h3>Listing games</h3>
 
 
 <table>
@@ -10,11 +10,11 @@
   </tr>
 
 <% @games.each do |game| %>
-  <tr>
+  <tr class="<%= cycle("even", "odd") %>">
 	<td><%= game.is_active? %></td>	  
     <td><%= link_to 'Show', game %></td>
     <td><%= link_to 'Edit', edit_game_path(game) %></td>
-    <td><%= link_to 'Destroy', game, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'X', game, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

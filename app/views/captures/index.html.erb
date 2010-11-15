@@ -1,8 +1,26 @@
 <h3>Capture Log</h3>
-<p> ID | Mobile | Node | Game | is active?</p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Cell #</th>
+	<th>Node</th>
+	<th>Game ID</th>
+    <th>Active?</th>
+    <th></th>
+	<th></th>
+  </tr>
+
 <% @captures.each do |capture| %>
-	<p><%= capture.id %>
-		 | <%= capture.runner.mobile_number if capture.runner %> | 
-		<%= capture.node.name %> | 
-		<%= capture.game.id %> | <%= capture.game.is_active? %></p>
+  <tr class="<%= cycle("even", "odd") %>">
+	<td><%= capture.id %></td>
+    <td><%= capture.runner.mobile_number if capture.runner %></td>
+	<td><%= capture.node.name %></td>
+	<td><%= capture.game.id if capture.game %></td>
+	<td><%= capture.game.is_active? if capture.game %></td>
+    <td><%= link_to 'E', edit_capture_path(capture) %></td>
+    <td><%= link_to 'X', capture, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
 <% end %>
+</table>
+
+<br />

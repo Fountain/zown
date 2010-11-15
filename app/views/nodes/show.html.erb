@@ -1,9 +1,13 @@
+<h3><%= @node.name %></h3>
 <p id="notice"><%= notice %></p>
-Size: <%= @node.codes.size %>
-<br />
+<p>Size: <%= @node.codes.size %></p>
+<hr />
+<p>Paste this code into Arduino:</p>
+<p class="arduino_code">char testArray[<%= @node.codes.size %>][5] ={<br />
 <% @node.codes.each do |code| %>
-<%= code.contents %>
-<% end %>
+{"<%= code.contents %>"},<br />
+<% end %>};</p>
+<hr />
 <br />
 
 <%= link_to 'Edit', edit_node_path(@node) %> |

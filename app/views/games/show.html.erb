@@ -1,11 +1,11 @@
+<h3>Game Summary</h3>
 <p id="notice"><%= notice %></p>
 
 Number of Teams: <%= @game.teams.size %><br/>
-Total Nodes: <%= @game.nodes.size %>
-<br /><br />
-Nodes: <br />
+<br />
+Nodes: (<%= @game.nodes.size %>)<br />
 <% @game.nodes.each do |node| %>
-<%= node.name %> | Controlling Team: <%= node.current_owner %> | <br />
+<%= node.name %> | Controlling Team: <%= node.current_owner %> <br />
 <% end %>
 <br /> Start Time: <%= @game.start_time %>
 <br /> End Time: <%= @game.end_time %>

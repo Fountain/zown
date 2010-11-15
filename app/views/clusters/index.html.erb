@@ -1,17 +1,19 @@
-<h1>Listing clusters</h1>
+<h3>Listing clusters</h3>
 
 <table>
   <tr>
+	<th>Name:</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
 
 <% @clusters.each do |cluster| %>
-  <tr>
-    <td><%= link_to 'Show', cluster %></td>
+  <tr class="<%= cycle("even", "odd") %>">
+    <td><%= cluster.name %> (<%= cluster.nodes.size %>)</td>
+	<td><%= link_to 'Show', cluster %></td>
     <td><%= link_to 'Edit', edit_cluster_path(cluster) %></td>
-    <td><%= link_to 'Destroy', cluster, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'X', cluster, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

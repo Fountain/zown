@@ -1,4 +1,4 @@
-<h1>Listing nodes</h1>
+<h3>listing nodes</h3>
 
 <table>
   <tr>
@@ -9,11 +9,11 @@
   </tr>
 
 <% @nodes.each do |node| %>
-  <tr>
+  <tr class="<%= cycle("even", "odd") %>">
 	<td><%= node.name %>
     <td><%= link_to 'Show', node %></td>
     <td><%= link_to 'Edit', edit_node_path(node) %></td>
-    <td><%= link_to 'Destroy', node, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'X', node, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

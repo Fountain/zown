@@ -6,7 +6,7 @@ class Node < ActiveRecord::Base
   
   after_create :assign_codes
   
-  CODE_COUNT = 100
+  CODE_COUNT = 128
   
   def cumulative_time
     # get all captures with in the current game 
@@ -37,12 +37,13 @@ class Node < ActiveRecord::Base
   end
   
   def assign_codes
-    codes = Node.generate_code_set
+    codes = Node.generate_alphanumeric_code_set
     codes.each do |code|
       Code.create :contents => code, :node => self
     end
   end
   
+  #generate numbers only code set
   def self.generate_code_set(count=CODE_COUNT, seed=nil)
     if seed
       srand seed
@@ -69,6 +70,30 @@ class Node < ActiveRecord::Base
     end
     numbers
   end
+  
+  #generate an Alphanumeric code set
+  def self.generate_alphanumeric_code_set(count=CODE_COUNT, seed=nil)
+     if seed
+       srand seed
+     end
+
+     size = 4
+     chars = ('A'..'Z').to_a + ('0'..'9').to_a
+     
+     # create a blank array to hold codes
+     numbers = []
+     # genearate codes
+     count.times do |i|
+       num = (0...size).collect { chars[Kernel.rand(chars.length)] }.join
+       # confirm number is unique
+       while numbers.include?(num)
+         num = (0...size).collect { chars[Kernel.rand(chars.length)] }.join
+       end
+       # now our number is new
+       numbers << num
+     end
+     numbers
+   end
   
   def current_owner
     capture = self.captures.order("created_at").last 
