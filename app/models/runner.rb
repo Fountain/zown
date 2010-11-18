@@ -9,4 +9,9 @@ class Runner < ActiveRecord::Base
     self.team = game.smallest_team
   end
   
+  def join_game_auto_assign_team
+    game = Game.active_game
+    runner.assign_to_smallest_team(game)
+  end
+  
 end

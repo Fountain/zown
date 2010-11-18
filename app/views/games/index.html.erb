@@ -1,18 +1,19 @@
 <h3>Listing games</h3>
 
-
 <table>
   <tr>
+	<th>Game ID</th>
+	<th>Date</th>
 	<th>Active?</th>
-    <th></th>
     <th></th>
     <th></th>
   </tr>
 
 <% @games.each do |game| %>
   <tr class="<%= cycle("even", "odd") %>">
+	<td><%= link_to game.id, game %></td>
+	<td><%= game.end_time.strftime("%m/%d/%y") if game.end_time %></td>
 	<td><%= game.is_active? %></td>	  
-    <td><%= link_to 'Show', game %></td>
     <td><%= link_to 'Edit', edit_game_path(game) %></td>
     <td><%= link_to 'X', game, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

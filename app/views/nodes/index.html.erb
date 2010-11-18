@@ -2,16 +2,14 @@
 
 <table>
   <tr>
-    <th>Name:</th>
-    <th></th>
+    <th>Name</th>
     <th></th>
     <th></th>
   </tr>
 
 <% @nodes.each do |node| %>
   <tr class="<%= cycle("even", "odd") %>">
-	<td><%= node.name %>
-    <td><%= link_to 'Show', node %></td>
+	<td><%= link_to node.name, node %></td>
     <td><%= link_to 'Edit', edit_node_path(node) %></td>
     <td><%= link_to 'X', node, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

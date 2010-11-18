@@ -4,9 +4,24 @@ class Game < ActiveRecord::Base
   has_many :nodes
   has_many :runners, :through => :teams
   
-  before_create :add_two_teams
+  before_create :create_teams
+  after_create :reset_nodes
+  
+  attr_accessor :number_of_teams
+  attr_accessor :auto_assign_runners
     
   # MAX_NUMBER_OF_TEAMS = 2
+  TEAM_NAMES = ['Red', 'Blue', 'Green', 'Yellow']
+  
+  # before creating a new game check to see if one is currently in progress
+  def check_for_active_game
+    # TODO
+  end
+  
+  #reset ownership of all nodes after the game is created
+  def reset_nodes
+    # TODO
+  end
   
   def winning_team
     max = self.cumulative_team_times.max do |ob1, ob2|
@@ -18,8 +33,10 @@ class Game < ActiveRecord::Base
     max[0] # team
   end
   
-  def add_two_teams
-    self.teams = [Team.create, Team.create]
+  def create_teams
+    number_of_teams.to_i.times do |i|
+      self.teams << Team.create (:name => TEAM_NAMES[i])
+    end
   end
   
   # returns a hash of teams and total times

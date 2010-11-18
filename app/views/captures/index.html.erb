@@ -4,8 +4,9 @@
     <th>ID</th>
     <th>Cell #</th>
 	<th>Node</th>
-	<th>Game ID</th>
+	<th>Game</th>
     <th>Active?</th>
+    <th>Time</th>
     <th></th>
 	<th></th>
   </tr>
@@ -17,6 +18,7 @@
 	<td><%= capture.node.name %></td>
 	<td><%= capture.game.id if capture.game %></td>
 	<td><%= capture.game.is_active? if capture.game %></td>
+	<td><%= capture.created_at.strftime("%I:%M%p") %></td>
     <td><%= link_to 'E', edit_capture_path(capture) %></td>
     <td><%= link_to 'X', capture, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

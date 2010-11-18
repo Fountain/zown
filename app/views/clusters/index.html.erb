@@ -2,16 +2,14 @@
 
 <table>
   <tr>
-	<th>Name:</th>
-    <th></th>
+	<th>Name</th>
     <th></th>
     <th></th>
   </tr>
 
 <% @clusters.each do |cluster| %>
   <tr class="<%= cycle("even", "odd") %>">
-    <td><%= cluster.name %> (<%= cluster.nodes.size %>)</td>
-	<td><%= link_to 'Show', cluster %></td>
+    <td><%= link_to cluster.name, cluster %> (<%= cluster.nodes.size %>)</td>
     <td><%= link_to 'Edit', edit_cluster_path(cluster) %></td>
     <td><%= link_to 'X', cluster, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

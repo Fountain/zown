@@ -1,10 +1,9 @@
-<p id="notice"><%= notice %></p>
-
-Size: <%= @cluster.nodes.size %>
-<br />
+<h3><%= @cluster.name %></h3>
+<p>Size: <%= @cluster.nodes.size %></p>
+<hr />
 <% @cluster.nodes.each do |node| %>
-<%= node.name %>
-<br />
+	<%= node.name %>
+	<br />
 <% end %>
 <br />
 

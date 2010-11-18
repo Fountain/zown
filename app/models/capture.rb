@@ -8,7 +8,11 @@ class Capture < ActiveRecord::Base
   
   validates_presence_of :game, :runner, :node, :message => "can't be found"
   validate :game_is_active 
-#  validate :mobile_number_is_valid 
+#  validate :mobile_number_is_valid
+
+ def parse_sms
+   # command_words = %w[join, game, abort, end,]
+ end
   
   private
   def game_is_active

@@ -36,4 +36,14 @@ class CapturesController < ApplicationController
     end 
   end
   
+  def destroy
+    @capture = Capture.find(params[:id])
+    @capture.destroy
+
+    respond_to do |format|
+      format.html { redirect_to(captures_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
 end

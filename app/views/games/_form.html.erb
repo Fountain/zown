@@ -13,6 +13,9 @@
 
 	<%= f.label :creator_id %>:
 	<%= f.text_field :creator_id %><br />
+	
+	<%= f.label :number_of_teams %>:
+	<%= f.text_field :number_of_teams %><br />
 
 	<%= f.label :time_limit %>:
 	<%= f.text_field :time_limit %><br />
@@ -22,6 +25,9 @@
 
 	<%= f.label :security %>:
 	<%= f.check_box :security %><br />
+	
+	<%= f.label :auto_assign_runners %>:
+	<%= f.check_box :auto_assign_runners %><br />
 	
 	<% if @game.new_record? %>
 		<%= f.label :clusters %>

@@ -1,30 +1,59 @@
-<h3>Game Summary</h3>
-<p id="notice"><%= notice %></p>
+<%= render :partial => 'game_nav'%>
 
-Number of Teams: <%= @game.teams.size %><br/>
-<br />
-Nodes: (<%= @game.nodes.size %>)<br />
-<% @game.nodes.each do |node| %>
-<%= node.name %> | Controlling Team: <%= node.current_owner %> <br />
-<% end %>
-<br /> Start Time: <%= @game.start_time %>
-<br /> End Time: <%= @game.end_time %>
-<br /> Total Captures: <%= @game.captures.size %><br />
-<br /> Cumulative Team times:<br />
-<% @game.cumulative_team_times.each do |team, time| %>
-	<%= team %>: <%= time.to_i %> seconds<br>
-<% end %>
+<h3>Game Summary</h3>
+
 <strong>Winning Team: <%= @game.winning_team %></strong>
-<br /><br />
+<% if @game.start_time%>
+<p><%= @game.start_time.strftime("Start: %I:%M%p") %> | <%= @game.end_time.strftime("End: %I:%M%p") %>
+	| <%= @game.end_time.strftime("Date: %m/%d/%y") %></p>
+<% end %>
+
+<table>
+  <tr>
+	<th>Teams (<%= @game.teams.size %>)</th>
+	<th>Total Time</th>
+	<th>Total Captures</th>
+  </tr>
+
+<% @game.cumulative_team_times.each do |team, time| %>
+  <tr class="<%= cycle("even", "odd") %>">
+	<td><%= team %></td>
+	<td><%= time.to_i %> seconds</td>
+	<td><%= team.captures.size %></td>	  
+  </tr>
+<% end %>
+</table>
+
+<table>
+  <tr>
+	<th>Nodes (<%= @game.nodes.size %>)</th>
+	<th>Controlling Team</th>
+  </tr>
+
+<% @game.nodes.each do |node| %>
+  <tr class="<%= cycle("even", "odd") %>">
+	<td><%= node.name %></td>
+	<td><%= node.current_owner %></td>	  
+  </tr>
+<% end %>
+</table>
 
 <% @game.teams.each do |team| %>
-	<%= team %> Runners:<br />
-	<% team.runners.each do |runner| %>
-		<%= runner.mobile_number %> | <%= runner.captures.size %> <br />
-	<% end %>
-	<br />
-<% end %>
+	<h4><%= team %> Runners</h4>
+	<table>
+	  <tr>
+		<th>Mobile #</th>
+		<th><%= pluralize(team.captures.size, 'Capture')%> Total</th>
+	  </tr>
 
+	<% team.runners.each do |runner| %>
+	  <tr class="<%= cycle("even", "odd") %>">
+		<td><%= runner.mobile_number %></td>
+		<td><%= runner.captures.size %></td>	  
+	  </tr>
+	<% end %>
+	</table>
+<% end %>
 
 
 <%= link_to 'Edit', edit_game_path(@game) %> |
