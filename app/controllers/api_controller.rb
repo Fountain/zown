@@ -19,7 +19,6 @@ class ApiController < ApplicationController
       else
        # send error message
       end
-      runner.save
     rescue => e
       # do stuff with excpetions
       # send_message(e.to_s)
@@ -30,6 +29,7 @@ class ApiController < ApplicationController
     team = Team.find_by_name(team_name)
     if team
       runner.team = team
+      runner.save
     else
       raise 'team not found'
     end
