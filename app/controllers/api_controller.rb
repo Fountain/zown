@@ -11,6 +11,7 @@ class ApiController < ApplicationController
       if message == "join"
         # join game and auto assign team
         runner.join_game_auto_assign_team
+        runner.save
       elsif message =~ /^join (.+)$/i
         team_name = $1
         join_team(runner, team_name)
