@@ -19,6 +19,7 @@ class ApiController < ApplicationController
       else
        # send error message
       end
+      runner.save
     rescue => e
       # do stuff with excpetions
       # send_message(e.to_s)
