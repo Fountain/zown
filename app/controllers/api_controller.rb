@@ -24,6 +24,7 @@ class ApiController < ApplicationController
       # do stuff with excpetions
       # send_message(e.to_s)
     end
+    render :text => 'OK!'
   end
   
   def join_team(runner, team_name)
