@@ -35,7 +35,7 @@ class Game < ActiveRecord::Base
   
   def create_teams
     number_of_teams.to_i.times do |i|
-      self.teams << Team.create (:name => TEAM_NAMES[i])
+      self.teams << Team.create(:name => TEAM_NAMES[i])
     end
   end
   

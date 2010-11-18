@@ -32,7 +32,7 @@ class CapturesController < ApplicationController
       end
     else
       # tell them to join the game first
-      redirect_to (join_game_path(Game.active_game), :notice => 'Please join the game first')
+      redirect_to(join_game_path(Game.active_game), :notice => 'Please join the game first')
     end 
   end
   

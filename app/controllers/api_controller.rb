@@ -44,7 +44,7 @@ class ApiController < ApplicationController
       # if code has been used
       # send error 'aleady used'
       # if code is good, create code
-      Capture.create (:node => node, :runner => runner, :game => game)
+      Capture.create(:node => node, :runner => runner, :game => game)
     else
       # send error 'I don't know that code'
       raise "I don't know that code"
