@@ -1,5 +1,7 @@
 class ApiController < ApplicationController
   
+  skip_before_filter :verify_authenticity_token
+  
   def twilio_sms
     runner = Runner.find_or_create_by_mobile_number params["From"]
     message = params["Body"].strip
