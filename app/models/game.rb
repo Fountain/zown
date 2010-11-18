@@ -11,7 +11,7 @@ class Game < ActiveRecord::Base
   attr_accessor :auto_assign_runners
     
   # MAX_NUMBER_OF_TEAMS = 2
-  TEAM_NAMES = ['Red', 'Blue', 'Green', 'Yellow']
+  TEAM_NAMES = ['red', 'blue', 'green', 'yellow']
   
   # before creating a new game check to see if one is currently in progress
   def check_for_active_game

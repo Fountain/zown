@@ -8,15 +8,14 @@ class ApiController < ApplicationController
     
     begin
       # stuff that might throw exceptions  
-      if message == "join"
+      if message =~ /^join$/i
         # join game and auto assign team
         runner.join_game_auto_assign_team
         runner.save
       elsif message =~ /^join (.+)$/i
         team_name = $1
         join_team(runner, team_name)
-      elsif Code.exists?(:contents => message)
-        authenticate_code(runner, message)
+      elsif authenticate_code(runner, message)
       else
        # send error message
       end
@@ -28,7 +27,7 @@ class ApiController < ApplicationController
   end
   
   def join_team(runner, team_name)
-    team = Team.find_by_name(team_name)
+    team = Team.find_by_name(team_name.downcase)
     if team
       runner.team = team
       runner.save
@@ -40,17 +39,23 @@ class ApiController < ApplicationController
   # authenticate capture
   def authenticate_code(runner, message)
     # if code is not in active game
-    code = Code.find_by_contents(message)
-    node = code.node
-    game = node.game
-    if game.is_active?
-      # if code has been used
-      # send error 'aleady used'
-      # if code is good, create code
-      Capture.create(:node => node, :runner => runner, :game => game)
+    code = Code.find_by_contents(message.upcase)
+    if code
+      node = code.node
+      game = node.game
+      if game.is_active?
+        # if code has been used
+        # send error 'aleady used'
+        # if code is good, create code
+        Capture.create(:node => node, :runner => runner, :game => game)
+      else
+        # send error 'I don't know that code'
+        raise "I don't know that code"
+      end
     else
-      # send error 'I don't know that code'
-      raise "I don't know that code"
+    
     end
+    
+    true
   end
 end
