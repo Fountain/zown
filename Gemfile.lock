@@ -50,7 +50,11 @@ GEM
     cucumber-rails (0.3.2)
       cucumber (>= 0.8.0)
     culerity (0.2.12)
+    daemons (1.1.0)
     database_cleaner (0.5.2)
+    delayed_job (2.1.1)
+      activesupport (~> 3.0)
+      daemons
     devise (1.1.2)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 0.10.7)
@@ -129,6 +133,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   database_cleaner
+  delayed_job
   devise
   launchy
   rails (= 3.0.0)

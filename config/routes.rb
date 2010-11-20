@@ -17,6 +17,7 @@ Zown::Application.routes.draw do
   #   match 'products/:id' => 'catalog#view'
   match 'capture' => 'captures#new'
   match 'api/twilio/sms' => 'api#twilio_sms'
+  match 'sms' => 'api#twilio_sms_response'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:

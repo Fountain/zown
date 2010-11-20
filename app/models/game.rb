@@ -11,7 +11,19 @@ class Game < ActiveRecord::Base
   attr_accessor :auto_assign_runners
     
   # MAX_NUMBER_OF_TEAMS = 2
-  TEAM_NAMES = ['red', 'blue', 'green', 'yellow']
+  TEAM_NAMES = ['red', 'blue', 'green', 'yellow', 'purple', 'black', 'white']
+  
+  # schedules end game routine using delayed_job
+  def end_after_delay
+    self.sleep self.time_limit.minutes  # this surrenders Thread execution, so Heroku might charge less
+    self.end!
+  end
+
+  # end game routine
+  def end!
+   #   ...
+   render "The game is over"
+  end
   
   # before creating a new game check to see if one is currently in progress
   def check_for_active_game
@@ -72,14 +84,17 @@ class Game < ActiveRecord::Base
     self.start_time + self.time_limit.minutes if self.start_time and self.time_limit
   end
   
+  # check to see if the game is active
   def is_active?
     self.end_time.blank? or Time.now < self.end_time
   end
   
+  # return the team with the least Runners
   def smallest_team
     self.teams.min{|t1,t2| t1.runners.size <=> t2.runners.size }
   end
   
+  # return the active game
   def self.active_game
     games = Game.all
     game = nil
@@ -88,15 +103,16 @@ class Game < ActiveRecord::Base
         game = g
         break
       end
-    end
-    
+    end  
     game
   end
   
+  # special method for collections weirdness
   def cluster_ids
     []
   end
   
+  # special method for collections weirdness
   def cluster_ids=(ids)
     ids.each do |cluster_id|
       cluster = Cluster.find cluster_id
@@ -104,6 +120,7 @@ class Game < ActiveRecord::Base
     end
   end
   
+  # are there any captures yet?
   def first_capture?
     self.captures.empty?
   end
