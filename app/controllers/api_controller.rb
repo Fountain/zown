@@ -2,18 +2,7 @@ class ApiController < ApplicationController
   
   skip_before_filter :verify_authenticity_token
   
-  # Twilio authentication credentials
-  ACCOUNT_SID = 'AC0d3d975efe62587e3d304fd2b5723816'
-  ACCOUNT_TOKEN = 'd5fd375ea52d200c1ff288ff7126dab6'
 
-  # version of the Twilio REST API to use
-  API_VERSION = '2010-04-01'
-
-  # base URL of this application
-  BASE_URL = "http://zown.heroku.com/sms"
-
-  # Outgoing Caller ID you have previously validated with Twilio
-  CALLER_ID = '9176526928'
   
   def twilio_sms
     runner = Runner.find_or_create_by_mobile_number params["From"]
@@ -25,12 +14,14 @@ class ApiController < ApplicationController
         # join game and auto assign team
         runner.join_game_auto_assign_team
         runner.save
-        sms_body = "Added to team" 
-        twilio_sms_response(runner, message)
+        outgoing_message = "Added to #{runner.team}" 
+        Messaging.outgoing_sms(runner, outgoing_message)
       elsif message =~ /^join (.+)$/i
         team_name = $1
         join_team(runner, team_name)
       elsif authenticate_code(runner, message)
+        outgoing_message = "zown successfully captured"
+        Messaging.outgoing_sms(runner, outgoing_message)
       else
        # send error message
       end
@@ -62,7 +53,9 @@ class ApiController < ApplicationController
         # if code has been used
         # send error 'aleady used'
         # if code is good, create code
-        Capture.create(:node => node, :runner => runner, :game => game)
+        # TODO abstract to Runner class (take a code as argument)
+        Capture.create(:node => node, :runner => runner, :game => game, :team => runner.team)
+        
       else
         # send error 'I don't know that code'
         raise "I don't know that code"
@@ -72,20 +65,6 @@ class ApiController < ApplicationController
     end
     
     true
-  end
-  
-  
-  def twilio_sms_response(runner, sms_body)
-    account = Twilio::RestAccount.new(ACCOUNT_SID, ACCOUNT_TOKEN)
-    params = {
-        'From' => CALLER_ID,
-        'To' => runner,
-        'Body' => sms_body,
-    }
-    resp = account.request("/#{API_VERSION}/Accounts/#{ACCOUNT_SID}/SMS/Messages",
-        'POST', params)
-    # resp.error! unless resp.kind_of? Net::HTTPSuccess
-    # render "code: %s\nbody: %s" % [resp.code, resp.body]
   end
     
 end

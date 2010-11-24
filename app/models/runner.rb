@@ -14,4 +14,9 @@ class Runner < ActiveRecord::Base
     self.assign_to_smallest_team(game)
   end
   
+  def captures_in_current_game
+    game_id = self.game.id
+    self.captures.find_all_by_game_id(game_id)
+  end
+  
 end

@@ -52,6 +52,7 @@ GEM
     culerity (0.2.12)
     daemons (1.1.0)
     database_cleaner (0.5.2)
+    default_value_for (1.0.1)
     delayed_job (2.1.1)
       activesupport (~> 3.0)
       daemons
@@ -133,6 +134,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails
   database_cleaner
+  default_value_for
   delayed_job
   devise
   launchy

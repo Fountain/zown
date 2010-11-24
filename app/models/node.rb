@@ -8,6 +8,8 @@ class Node < ActiveRecord::Base
   
   CODE_COUNT = 128
   
+  # get the cumulative time for node
+  # TODO add temporary capture at end for measuring purposes
   def cumulative_time
     # get all captures with in the current game 
     captures = self.captures.where :game_id => self.game.id

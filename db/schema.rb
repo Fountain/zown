@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101119004126) do
+ActiveRecord::Schema.define(:version => 20101123022052) do
 
   create_table "captures", :force => true do |t|
     t.integer  "game_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20101119004126) do
     t.datetime "captured_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "team_id"
   end
 
   create_table "clusters", :force => true do |t|
@@ -87,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20101119004126) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.integer  "aggregate_time"
   end
 
 end

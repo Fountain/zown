@@ -2,7 +2,7 @@
 
 <h3>Game Summary</h3>
 
-<strong>Winning Team: <%= @game.winning_team %></strong>
+<strong>Winning Team: <%#= @game.winning_team %></strong>
 <% if @game.start_time%>
 <p><%= @game.start_time.strftime("Start: %I:%M%p") %> | <%= @game.end_time.strftime("End: %I:%M%p") %>
 	| <%= @game.end_time.strftime("Date: %m/%d/%y") %></p>
@@ -15,13 +15,13 @@
 	<th>Total Captures</th>
   </tr>
 
-<% @game.cumulative_team_times.each do |team, time| %>
+<%# @game.cumulative_team_times.each do |team, time| %>
   <tr class="<%= cycle("even", "odd") %>">
-	<td><%= team %></td>
-	<td><%= time.to_i %> seconds</td>
-	<td><%= team.captures.size %></td>	  
+	<td><%#= team %></td>
+	<td><%#= time.to_i %> seconds</td>
+	<td><%#= team.captures.size %></td>	  
   </tr>
-<% end %>
+<%# end %>
 </table>
 
 <table>
@@ -49,7 +49,7 @@
 	<% team.runners.each do |runner| %>
 	  <tr class="<%= cycle("even", "odd") %>">
 		<td><%= runner.mobile_number %></td>
-		<td><%= runner.captures.size %></td>	  
+		<td><%= runner.captures_in_current_game.size %></td>	  
 	  </tr>
 	<% end %>
 	</table>

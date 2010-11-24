@@ -14,6 +14,8 @@ class CapturesController < ApplicationController
     runner = Runner.find_or_create_by_mobile_number(params[:runner][:mobile_number])
     # check to see if the runner belongs to a game
     if runner.game
+      team = runner.team
+      @capture.team = team
       node = Node.find_by_code(params[:node][:code])
       if node
         @capture.node = node
