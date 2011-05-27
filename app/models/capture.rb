@@ -5,10 +5,11 @@ class Capture < ActiveRecord::Base
   belongs_to :team
   
   before_save :start_game_if_not_started
-  after_create :update_aggregate_times
+  before_save :assign_team_from_runner
+  after_create :update_aggregate_times!
   
-  validates_presence_of :game, :runner, :node, :message => "can't be found"
-  validate :game_is_active 
+  validates_presence_of :game, :runner, :node, :team, :message => "can't be found"
+  validate :game_is_active
 #  validate :mobile_number_is_valid
  
  def parse_sms
@@ -26,13 +27,18 @@ class Capture < ActiveRecord::Base
   
   def start_game_if_not_started
     game = self.game
-    if game.is_active? && game.first_capture? 
+    if !game.has_started? && game.first_capture? 
       game.start!
     end
   end
   
-  def update_aggregate_times
-    self.game.update_aggregate_times
+  #ensure that team is associated with capture
+  def assign_team_from_runner
+    self.team ||= self.runner.team # same as self.team = self.runner.team if self.team.nil?
+  end
+  
+  def update_aggregate_times!
+    self.game.update_aggregate_times!
   end
   
 end

@@ -1,0 +1,11 @@
+<h3>zown capture</h3>
+
+<% form_tag submit_message_path do |f| %>
+	<%= label_tag :mobile_number, 'Mobile #'%>:
+	<%= phone_field_tag :mobile_number %>
+	<br />
+	<%= label_tag :message, 'Message'%>:
+	<%= text_field_tag :message %>
+	<br />
+	<%= submit_tag %>
+<% end %>

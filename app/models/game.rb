@@ -5,31 +5,82 @@ class Game < ActiveRecord::Base
   has_many :runners, :through => :teams
 
   before_create :create_teams
-  after_create :reset_nodes
 
   attr_accessor :number_of_teams
   attr_accessor :auto_assign_runners
+  
+  default_value_for :creator_id, 1
+  default_value_for :number_of_teams, 2
+  default_value_for :auto_assign_runners, true
 
   TEAM_NAMES = ['red', 'blue', 'green', 'yellow', 'purple', 'black', 'white']
 
-  def update_aggregate_times
-    # look through all nodes
+  def code_already_used?(code)
+    self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
+  end
+
+  # update each team's time after a capture is created
+  def current_aggregate_times
+    # get all nodes for current game
     nodes = self.nodes
     
-    current_time = self.captures.last.created_at
+    # last_capture = Game.find(self.id).captures.last
+    # set update reference time to last capture
+    current_time = Time.now #last_capture.created_at #self.captures.last.created_at
+    
+    team_hash = {} # {1 => 300(s), 2 => 0(s), ...}
+    # populating the hash
+    self.teams.each{|team| team_hash[team.id] = team.aggregate_time }
+    
     # for each node, 
     nodes.each do |node|
       previous_capture = self.captures[-2]
+      # if there's a second to last capture
       if previous_capture
-        team = previous_capture.team
+        team_id = previous_capture.team.id
         # compute (current_time - Capture.last.created_at)
         time_to_add = current_time - previous_capture.created_at  
-        # update the agg time
-        team.aggregate_time += time_to_add
-        team.save
+        # update the aggregate time
+        team_hash[team_id] += time_to_add
+        # save the record
+        # team.save
       end
-    end 
+    end
+    
+    team_hash
   end
+  
+  def update_aggregate_times!
+    times_hash = self.current_aggregate_times
+    times_hash.each do |team_id, new_time|
+      team = Team.find(team_id)
+      team.aggregate_time = new_time
+      team.save!
+    end
+  end
+  
+  # # AFCHECK check my work
+  # # Aggregate time for views
+  # def current_aggregate_times
+  #   # look through all nodes
+  #   nodes = self.nodes
+  #   # get current time
+  #   current_time = Time.now
+  #   # for each node, 
+  #   nodes.each do |node|
+  #     # get the second to last capure
+  #     previous_capture = self.captures[-2]
+  #     # if there's a second to last capture
+  #     if previous_capture
+  #       # set team to the previous owner
+  #       team = previous_capture.team
+  #       # compute (current_time - Capture.last.created_at)
+  #       time_to_add = current_time - previous_capture.created_at  
+  #       # update the agg time
+  #       team.aggregate_time += time_to_add
+  #     end
+  #   end 
+  # end
 
   # schedule end game routine using delayed_job
   def end_after_delay
@@ -37,9 +88,15 @@ class Game < ActiveRecord::Base
     self.end!
   end
 
+  # AFCHECK
   # end game routine
   def end!
-    #   ...
+    # message all runners that the game is over
+    outgoing_message = "The game is over. #{self.winning_team} has won."
+    self.runners.each do |runner|
+      Messaging.outgoing_sms(runner, outgoing_message)
+    end
+    self.reset_nodes
     puts "The game is over + #{Time.now}"
   end
 
@@ -49,8 +106,10 @@ class Game < ActiveRecord::Base
   end
 
   #reset ownership of all nodes after the game is created
+  # TODO
   def reset_nodes
-    # TODO
+    # get all nodes for the active game
+    # reset ownership for all nodes
   end
 
   def winning_team
@@ -63,6 +122,7 @@ class Game < ActiveRecord::Base
     max[0] # team
   end
 
+  # using the TEAM_NAMES array, create teams for the game
   def create_teams
     number_of_teams.to_i.times do |i|
       self.teams << Team.create(:name => TEAM_NAMES[i])
@@ -70,6 +130,7 @@ class Game < ActiveRecord::Base
   end
 
   # returns a hash of teams and total times
+  # this method is deprecated
   def cumulative_team_times
     # get all nodes in this game
     nodes = self.nodes
@@ -89,7 +150,9 @@ class Game < ActiveRecord::Base
   def start!
     # TODO launch cron job?
     self.start_time = Time.now
-    self.save!   
+    self.save!
+    # queue the background job
+    self.delay.end_after_delay   
   end
 
   def add_cluster(cluster)
@@ -103,8 +166,16 @@ class Game < ActiveRecord::Base
   end
 
   # check to see if the game is active
+  def has_ended?
+    !self.end_time.blank? and Time.now > self.end_time
+  end
+  
+  def has_started?
+    !self.start_time.blank? and Time.now > self.start_time
+  end
+  
   def is_active?
-    self.end_time.blank? or Time.now < self.end_time
+    self.has_started? and !self.has_ended?
   end
 
   # return the team with the least Runners
@@ -114,7 +185,7 @@ class Game < ActiveRecord::Base
 
   # return the active game
   def self.active_game
-    games = Game.all
+    games = Game.all(:order => "created_at DESC")
     game = nil
     games.each do |g|
       if g.is_active?

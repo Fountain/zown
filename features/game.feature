@@ -17,13 +17,13 @@ Feature: Game
 		
 	Scenario: Unknown user messages the app
 		Given I am an unknown user
-		When I message the system
+		When I sms "join"
 		Then I am added as a Runner
 		
 	Scenario: Runner requests to join a game
 		Given I am a Runner
-		And there is a game available
-		When I request to "join" a game
+		And there is an unstarted game available
+		When I sms "join"
 		Then I am added to the game
 		
 	Scenario: Runner requests to join a game and no game is available
@@ -38,7 +38,7 @@ Feature: Game
 		Then I am unsubscribed from the system
 		
 	Scenario: Capturing a Node
-		Given I am Runner
+		Given I am a Runner
 		And there is an active game
 		And I am a Runner in that game
 		When I submit a valid code
@@ -75,22 +75,28 @@ Feature: Game
 ####################
 
 	Scenario: Creating a new game
-		Given I am an Captain
+		Given I am a Captain
 		When I create a new game
-		Then a new game is created
+		Then an inactive game exists
+		
+	Scenario: Manually starting a game
+		Given I am a Captain
+		And there is an inactive game
+		When I start the game manually
+		Then the game should be active
 		
 	Scenario: Repeating the last game
-		Given I am an Captain
+		Given I am a Captain
 		When I repeat the last game
 		Then a new game is created with the same settings as the last game
 		
 	Scenario: Aborting a game
-		Given I am an Captain
+		Given I am a Captain
 		When I abort my current game
 		Then the game is aborted
 		
 	Scenario: Ending a game
-		Given I am an Captain
+		Given I am a Captain
 		When I end my current game
 		Then the game is ended
 		

@@ -1,45 +1,70 @@
 class ApiController < ApplicationController
   
-  skip_before_filter :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token 
   
-
-  
-  def twilio_sms
-    runner = Runner.find_or_create_by_mobile_number params["From"]
-    message = params["Body"].strip
-    
-    begin
-      # stuff that might throw exceptions  
-      if message =~ /^join$/i
-        # join game and auto assign team
-        runner.join_game_auto_assign_team
-        runner.save
-        outgoing_message = "Added to #{runner.team}" 
-        Messaging.outgoing_sms(runner, outgoing_message)
-      elsif message =~ /^join (.+)$/i
-        team_name = $1
-        join_team(runner, team_name)
-      elsif authenticate_code(runner, message)
-        outgoing_message = "zown successfully captured"
-        Messaging.outgoing_sms(runner, outgoing_message)
-      else
-       # send error message
-      end
-    rescue => e
-      # do stuff with excpetions
-      # send_message(e.to_s)
-    end
-    render :text => 'OK!'
+  def message
+    # @runners = ..
+    # @teams = 
   end
   
-  def join_team(runner, team_name)
-    team = Team.find_by_name(team_name.downcase)
-    if team
-      runner.team = team
-      runner.save
-    else
-      raise 'team not found'
+  def submit_message
+    message = params[:message]
+    mobile_number = params[:mobile_number]
+    
+    #do stuff
+    outgoing_message = parse_sms(message, mobile_number)    
+    redirect_to message_path, :notice => outgoing_message
+  end
+  
+  def twilio_sms
+    mobile_number = params["From"]
+    message = params["Body"]
+    # send to parser and get response
+    outgoing_message = parse_sms(message, mobile_number)
+    unless outgoing_message.blank?
+      # send response
+      Messaging.outgoing_sms(mobile_number, outgoing_message)
+      render :text => outgoing_message
     end
+  end
+  
+  # returns a message or nil
+  def parse_sms(message, mobile_number)
+    runner = Runner.find_by_mobile_number(mobile_number)
+    outgoing_message = ""
+    if runner.nil?
+      runner = Runner.new
+      runner.mobile_number = mobile_number
+      runner.save!
+      outgoing_message += "Hello runner. You've been added to the system. "
+    end
+
+    if Game.active_game
+      message.strip!
+      begin
+        # stuff that might throw exceptions  
+        if message =~ /^join$/i
+          # join game and auto assign team
+          runner.join_game_auto_assign_team!
+          outgoing_message += "Added to #{runner.team.to_s}"  
+        elsif message =~ /^join (.+)$/i
+          team_name = $1
+          runner.join_team!(team_name)
+          outgoing_message = "Joined #{runner.team.to_s}"
+        elsif authenticate_code(runner, message)
+          # successfully captured
+          outgoing_message += "zown succesfully captured" 
+        else
+         outgoing_message += "message unclear, try again"
+        end
+      rescue RuntimeError => e
+        # do stuff with excpetions
+        outgoing_message = e.to_s
+      end
+    else
+      outgoing_message += "There are no active games. Hang tight."
+    end
+    outgoing_message
   end
   
   # authenticate capture
@@ -49,22 +74,24 @@ class ApiController < ApplicationController
     if code
       node = code.node
       game = node.game
-      if game.is_active?
-        # if code has been used
-        # send error 'aleady used'
-        # if code is good, create code
-        # TODO abstract to Runner class (take a code as argument)
-        Capture.create(:node => node, :runner => runner, :game => game, :team => runner.team)
-        
+      if game.code_already_used?(code)
+        raise "code already used"
+      end
+      # if code is good, create code
+      # TODO abstract to Runner class (take a code as argument)
+      capture = Capture.new(:node => node, :runner => runner, :game => game, :team => runner.team)
+      if capture.save
+        # returns true        
       else
-        # send error 'I don't know that code'
-        raise "I don't know that code"
+        # send message
+        raise "zown could not be captured: " + capture.errors.full_messages.join("; ")
       end
     else
-    
-    end
-    
+      raise "code not found"
+    end    
     true
   end
-    
+  
+
+  
 end

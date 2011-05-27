@@ -25,7 +25,8 @@ class Node < ActiveRecord::Base
         diff = capture.created_at - last_capture.created_at
         # add that difference to the previous owner's cumulative time
         team = last_capture.team
-        times[team] += diff
+        new_time = times[team] + diff
+        times[team] = new_time
       end
       last_capture = capture
     end

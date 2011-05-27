@@ -36,6 +36,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'cucumber'
+  gem 'webmock'
+  gem 'vcr'
   gem 'rspec-rails'
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page

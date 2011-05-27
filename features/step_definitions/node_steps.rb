@@ -1,11 +1,15 @@
 Given /^a node in an active game$/ do
-  @game = Game.create
-  @node = Node.create
-  @runner1 = Runner.create
-  @runner2 = Runner.create
+  @game = Game.create!
+  @game.start!
+  @node = Node.create!
+  @runner1 = Runner.create!
+  @runner2 = Runner.create!
   @game.teams[0].runners << @runner1
   @game.teams[1].runners << @runner2
+  @runner1.save!
+  @runner2.save!
   @game.nodes << @node
+  @node.save!
 end
 
 Given /^team one captured that node at$/ do |table|
@@ -18,6 +22,7 @@ Given /^team one captured that node at$/ do |table|
       capture.node = @node
       capture.runner = @runner1
       capture.created_at = time
+      capture.team = @runner1.team
     capture.save!
   end
 end
@@ -32,8 +37,27 @@ When /^team two captured that node at$/ do |table|
       capture.node = @node
       capture.runner = @runner2
       capture.created_at = time
+      capture.team = @runner2.team
     capture.save!
   end
+end
+
+Then /^each team should have a runner$/ do
+  Runner.all.size.should == 2
+  @game.teams[0].runners.size.should == 1
+  @game.teams[1].runners.size.should == 1
+end
+
+Then /^each runner should have a capture$/ do
+  @runner1.captures.size.should == 1
+  @runner2.captures.size.should == 1
+end
+
+
+Then /^each team should have a capture$/ do
+  Capture.all.size.should == 2
+  @game.teams[0].captures.size.should == 1
+  @game.teams[1].captures.size.should == 1
 end
 
 Then /^team one should have a cumulative time in minutes of$/ do |table|

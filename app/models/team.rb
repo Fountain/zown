@@ -6,7 +6,7 @@ class Team < ActiveRecord::Base
   default_value_for :aggregate_time, 0 
   
   def to_s
-    "Team " + self.name if self.name
+    "Team " + self.name.capitalize if self.name
   end
 end
 

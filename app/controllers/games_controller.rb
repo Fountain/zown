@@ -83,8 +83,6 @@ class GamesController < ApplicationController
   # POST /games.xml
   def create
     @game = Game.new(params[:game])
-    # queue the background job
-    @game.delay.end_after_delay
     
     respond_to do |format|
       if @game.save
