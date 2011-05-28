@@ -89,13 +89,16 @@ Then /^I am not added to the game$/ do
   @game.runners.include?(@runner).should be_false
 end
 
-#AF_CHECK
+Given /^there are no unstarted games$/ do
+  Game.unstarted_games.should be_empty
+end
+
 Given /^there is no game available$/ do
   Game.all.size.should == 0
 end
 
 Then /^I am told there is no game available at this time$/ do
-  pending # express the regexp above with the code you wish you had
+  WebMock.should have_requested(:post, /twilio\.com/).with(:body => /There%20are%20no%20active%20games/).once
 end
 
 When %r{^I message the system "([^"]*)", "([^"]*)", or "([^"]*)"$} do |arg1, arg2, arg3|

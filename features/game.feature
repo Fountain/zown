@@ -41,7 +41,7 @@ Feature: Game
 		
 	Scenario: Runner requests to join a game and no game is available
 		Given I am a Runner
-		And there is no game available
+		And there are no unstarted games
 		When I request to "join" a game
 		Then I am told there is no game available at this time
 	
