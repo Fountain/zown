@@ -3,7 +3,7 @@
 <h3>Game Summary</h3>
 
 <strong>Winning Team: <%#= @game.winning_team %></strong>
-<% if @game.start_time && @game.end_time %>
+<% if @game.has_ended? %>
 <p><%= @game.start_time.strftime("Start: %I:%M%p") %> | <%= @game.end_time.strftime("End: %I:%M%p") %>
 	| <%= @game.end_time.strftime("Date: %m/%d/%y") %></p>
 <% end %>

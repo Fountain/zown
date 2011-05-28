@@ -83,10 +83,20 @@ class Game < ActiveRecord::Base
   #     end
   #   end 
   # end
-
+  
+  def start!
+    # TODO launch cron job?
+    self.start_time = Time.now
+    self.save!
+    # queue the background job
+    self.delay.end_after_delay   
+  end
+  
   # schedule end game routine using delayed_job
   def end_after_delay
-    self.sleep self.time_limit.minutes  # this surrenders Thread execution, so Heroku might charge less
+    # this surrenders Thread execution, so Heroku might charge less, 
+    # time limit is in minutes (so we multiply by 60)
+    sleep self.time_limit * 60  
     self.end!
   end
 
@@ -94,12 +104,14 @@ class Game < ActiveRecord::Base
   # end game routine
   def end!
     # message all runners that the game is over
+    self.end_time = Time.now
+    self.save!
     outgoing_message = "The game is over. #{self.winning_team} has won."
     self.runners.each do |runner|
       Messaging.outgoing_sms(runner, outgoing_message)
     end
     self.reset_nodes
-    puts "The game is over + #{Time.now}"
+    puts "The game is over + #{self.end_time}"
   end
 
   # before creating a new game check to see if one is currently in progress
@@ -149,21 +161,13 @@ class Game < ActiveRecord::Base
     times
   end
 
-  def start!
-    # TODO launch cron job?
-    self.start_time = Time.now
-    self.save!
-    # queue the background job
-    self.delay.end_after_delay   
-  end
-
   def add_cluster(cluster)
     cluster.nodes.each do |node|
       nodes << node
     end
   end
 
-  def end_time
+  def expected_end_time
     self.start_time + self.time_limit.minutes if self.start_time and self.time_limit
   end
 

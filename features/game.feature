@@ -10,6 +10,12 @@ Feature: Game
 		And there are two Teams with Runners in the Game
 		When I request all the Runners in a Game
 		Then I should see all the Runners
+		
+	Scenario: Automated game ending
+		Given I create a new game
+		And the time limit is 30 minutes
+		When the game is started
+		Then the game should end in 30 minutes
 
 #####################
 # Runner Scenarios #
@@ -105,6 +111,7 @@ Feature: Game
 		
 	Scenario: Ending a game
 		Given I am a captain
+		And there is an active game
 		When I end my current game
 		Then the game is ended
 		

@@ -216,12 +216,11 @@ Then /^the game is aborted$/ do
 end
 
 When /^I end my current game$/ do
-  pending
-  @game.end!
+  Game.active_game.end!
 end
 
 Then /^the game is ended$/ do
-  pending # express the regexp above with the code you wish you had
+  Game.last.has_ended?.should be_true
 end
 
 When /^I balance teams$/ do
@@ -256,3 +255,15 @@ Given /^I am a Runner with mobile number (\+\d+)$/ do |mobile_number|
   @runner = Runner.create!(:mobile_number => mobile_number)
 end
 
+Given /^the time limit is (\d+) minutes$/ do |time_limit|
+  @game.time_limit = time_limit
+  @game.save!
+end
+
+When /^the game is started$/ do
+  Game.unstarted_games.first.start!
+end
+
+Then /^the game should end in (\d+) minutes$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
