@@ -48,7 +48,7 @@ end
 
 When %r{^I sms "([^"]*)" from (\+\d+)$} do |message, mobile_number|
   mobile_number.should_not == nil
-  VCR.use_cassette("sms_user") do
+  VCR.use_cassette("twilio") do
     post '/api/twilio/sms', :From => mobile_number, :Body => message
   end
 end
@@ -72,7 +72,7 @@ Given /^there is an active game available$/ do
 end
 
 When %r{^I request to "([^"]*)" a game$} do |message|
-  VCR.use_cassette("sms_user") do
+  VCR.use_cassette("twilio") do
     post '/api/twilio/sms', :From => @mobile_number, :Body => message
   end
 end
@@ -100,7 +100,7 @@ end
 
 When %r{^I message the system "([^"]*)", "([^"]*)", or "([^"]*)"$} do |arg1, arg2, arg3|
   pending
-  VCR.use_cassette("sms_user") do
+  VCR.use_cassette("twilio") do
     post '/api/twilio/sms', :From => @mobile_number, :Body => message
   end
 end
