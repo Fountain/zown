@@ -45,9 +45,19 @@ Feature: Game
 		When I request to "join" a game
 		Then I am told there is no game available at this time
 	
-	Scenario: Unsubscribing from the system
+	Scenario: Unsubscribing from the system using unsubscribe
 		Given I am a Runner
-		When I message the system "unsubscribe", "unsub", or "quit"
+		When I sms "unsubscribe" from +19174537966
+		Then I am unsubscribed from the system
+		
+	Scenario: Unsubscribing from the system using unsub
+		Given I am a Runner
+		When I sms "unsub" from +19174537966
+		Then I am unsubscribed from the system
+
+	Scenario: Unsubscribing from the system using quit
+		Given I am a Runner
+		When I sms "quit" from +19174537966
 		Then I am unsubscribed from the system
 		
 	Scenario: Capturing a Node

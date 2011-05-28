@@ -101,18 +101,10 @@ Then /^I am told there is no game available at this time$/ do
   WebMock.should have_requested(:post, /twilio\.com/).with(:body => /There%20are%20no%20active%20games/).once
 end
 
-When %r{^I message the system "([^"]*)", "([^"]*)", or "([^"]*)"$} do |arg1, arg2, arg3|
-  pending
-  VCR.use_cassette("twilio") do
-    post '/api/twilio/sms', :From => @mobile_number, :Body => message
-  end
-end
-
 Then /^I am unsubscribed from the system$/ do
   !Runner.where(:mobile_number => @mobile_number).exists?.should be_true
 end
 
-#AF CHECK
 Given /^there is an active game$/ do
   @game = Game.create!
   @game.start!
