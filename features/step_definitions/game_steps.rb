@@ -207,7 +207,6 @@ end
 
 #AF CHECK
 When /^I abort my current game$/ do
-  pending # express the regexp above with the code you wish you had
   @game.abort!
 end
 
