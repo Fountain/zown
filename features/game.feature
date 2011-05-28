@@ -105,9 +105,9 @@ Feature: Game
 		
 	Scenario: Aborting a game
 		Given I am a captain
-		And there is a game in progress
+		And there is an active game
 		When I abort my current game
-		Then the game is aborted
+		Then there are no active games
 		
 	Scenario: Ending a game
 		Given I am a captain

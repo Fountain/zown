@@ -37,12 +37,7 @@ class GamesController < ApplicationController
     # determine winner
     # send out end messages
   end
-  
-  def abort_game
-    # set game to inactive
-    # send out abort messages
-  end
-  
+    
   def index
     @games = Game.order("created_at DESC").all
 

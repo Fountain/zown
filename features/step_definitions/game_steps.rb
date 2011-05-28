@@ -208,11 +208,11 @@ end
 #AF CHECK
 When /^I abort my current game$/ do
   pending # express the regexp above with the code you wish you had
-  @game.abort_game
+  @game.abort!
 end
 
-Then /^the game is aborted$/ do
-  pending # express the regexp above with the code you wish you had
+Then /^there are no active games$/ do
+  Game.active_game.should be_nil
 end
 
 When /^I end my current game$/ do

@@ -100,18 +100,22 @@ class Game < ActiveRecord::Base
     self.end!
   end
 
-  # AFCHECK
   # end game routine
   def end!
+    self.abort!
+    
     # message all runners that the game is over
-    self.end_time = Time.now
-    self.save!
     outgoing_message = "The game is over. #{self.winning_team} has won."
     self.runners.each do |runner|
       Messaging.outgoing_sms(runner, outgoing_message)
     end
+  end
+  
+  def abort!
+    self.end_time = Time.now
+    self.save!
     self.reset_nodes
-    puts "The game is over + #{self.end_time}"
+    puts "The game has ended at + #{self.end_time}"
   end
 
   # before creating a new game check to see if one is currently in progress
