@@ -39,7 +39,7 @@ class ApiController < ApplicationController
       outgoing_message += "Hello runner. You've been added to the system. "
     end
 
-    if Game.active_game
+    unless Game.unstarted_games.empty?
       message.strip!
       begin
         # stuff that might throw exceptions  

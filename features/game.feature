@@ -16,21 +16,28 @@ Feature: Game
 ###################
 		
 	Scenario: Unknown user messages the app
-		Given I am an unknown user
-		When I sms "join"
+		Given There are no Runners
+		And I have a mobile number of +19174537966
+		When I sms "join" from +19174537966
 		Then I am added as a Runner
 		
-	Scenario: Runner requests to join a game
-		Given I am a Runner
+	Scenario: Runner requests to join an unstarted game
+		Given I am a Runner with mobile number +19174537966
 		And there is an unstarted game available
-		When I sms "join"
+		When I sms "join" from +19174537966
 		Then I am added to the game
+
+	Scenario: Runner requests to join an active game
+		Given I am a Runner with mobile number +19174537966
+		And there is an active game available
+		When I sms "join" from +19174537966
+		Then I am not added to the game
 		
 	Scenario: Runner requests to join a game and no game is available
 		Given I am a Runner
 		And there is no game available
 		When I request to "join" a game
-		Then I am told there is no game available a this time
+		Then I am told there is no game available at this time
 	
 	Scenario: Unsubscribing from the system
 		Given I am a Runner
@@ -75,33 +82,34 @@ Feature: Game
 ####################
 
 	Scenario: Creating a new game
-		Given I am a Captain
+		Given I am a captain
 		When I create a new game
-		Then an inactive game exists
+		Then an unstarted game exists
 		
 	Scenario: Manually starting a game
-		Given I am a Captain
-		And there is an inactive game
+		Given I am a captain
+		And there is an unstarted game
 		When I start the game manually
 		Then the game should be active
 		
 	Scenario: Repeating the last game
-		Given I am a Captain
+		Given I am a captain
 		When I repeat the last game
 		Then a new game is created with the same settings as the last game
 		
 	Scenario: Aborting a game
-		Given I am a Captain
+		Given I am a captain
+		And there is a game in progress
 		When I abort my current game
 		Then the game is aborted
 		
 	Scenario: Ending a game
-		Given I am a Captain
+		Given I am a captain
 		When I end my current game
 		Then the game is ended
 		
 	Scenario: Balancing Teams
-		Given I am a Captain
+		Given I am a captain
 		When I balance teams
 		Then the teams are balanced
 		

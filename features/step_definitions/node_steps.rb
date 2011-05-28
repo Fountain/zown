@@ -2,8 +2,8 @@ Given /^a node in an active game$/ do
   @game = Game.create!
   @game.start!
   @node = Node.create!
-  @runner1 = Runner.create!
-  @runner2 = Runner.create!
+  @runner1 = Runner.create!(:mobile_number => '+19174537966')
+  @runner2 = Runner.create!(:mobile_number => '+12223335555')
   @game.teams[0].runners << @runner1
   @game.teams[1].runners << @runner2
   @runner1.save!

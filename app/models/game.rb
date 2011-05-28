@@ -15,6 +15,8 @@ class Game < ActiveRecord::Base
 
   TEAM_NAMES = ['red', 'blue', 'green', 'yellow', 'purple', 'black', 'white']
 
+  scope :unstarted_games, where(['start_time IS NULL OR start_time < ?', Time.now])
+  
   def code_already_used?(code)
     self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
   end
