@@ -88,10 +88,11 @@ Feature: Game
 		
 	Scenario: Switching Teams
 		Given I am a Runner
-		And I belong to a team
+		And there is an active game
+		And I belong to the "red" team
 		And the game I belong to has not begun
 		When I request to "switch"
-		Then I am added switched to the other team	
+		Then I am switched to the other team	
 
 ######################
 # Captain Scenarios #
@@ -102,6 +103,11 @@ Feature: Game
 		When I create a new game
 		Then an unstarted game exists
 		
+	Scenario: Teams should get names automatically
+		Given I am a captain
+		When I create a new game
+		Then that games teams should have names
+			
 	Scenario: Manually starting a game
 		Given I am a captain
 		And there is an unstarted game
@@ -127,6 +133,7 @@ Feature: Game
 		
 	Scenario: Balancing Teams
 		Given I am a captain
+		And there is an active game
 		When I balance teams
 		Then the teams are balanced
 		

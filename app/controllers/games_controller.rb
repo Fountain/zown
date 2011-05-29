@@ -23,21 +23,7 @@ class GamesController < ApplicationController
     end
     # TODO send confirmation
   end
-  
-  def balance_games
-    # get the total of each team
-    # remove a Runner from the team with the most Runners
-    # add that Runner to the team with fewer Runners
-    # repeat until the teams are even or only one player apart
-    # send alert to affected Runners
-  end
-  
-  def end_game
-    # set game to inactive
-    # determine winner
-    # send out end messages
-  end
-    
+   
   def index
     @games = Game.order("created_at DESC").all
 

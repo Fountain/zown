@@ -61,29 +61,6 @@ class Game < ActiveRecord::Base
     end
   end
   
-  # # AFCHECK check my work
-  # # Aggregate time for views
-  # def current_aggregate_times
-  #   # look through all nodes
-  #   nodes = self.nodes
-  #   # get current time
-  #   current_time = Time.now
-  #   # for each node, 
-  #   nodes.each do |node|
-  #     # get the second to last capure
-  #     previous_capture = self.captures[-2]
-  #     # if there's a second to last capture
-  #     if previous_capture
-  #       # set team to the previous owner
-  #       team = previous_capture.team
-  #       # compute (current_time - Capture.last.created_at)
-  #       time_to_add = current_time - previous_capture.created_at  
-  #       # update the agg time
-  #       team.aggregate_time += time_to_add
-  #     end
-  #   end 
-  # end
-  
   def start!
     # TODO launch cron job?
     self.start_time = Time.now
@@ -117,6 +94,19 @@ class Game < ActiveRecord::Base
     self.reset_nodes
     puts "The game has ended at + #{self.end_time}"
   end
+  
+#AF Check 
+  def balance_teams
+    # get all game for team
+    #teams = self.teams
+    #teams.each do |team|
+    # get the total of each team
+    # remove a Runner from the team with the most Runners
+    # add that Runner to the team with fewer Runners
+    # repeat until the teams are even or only one player apart
+    # send alert to affected Runners
+    #end
+  end
 
   # before creating a new game check to see if one is currently in progress
   def check_for_active_game
@@ -143,7 +133,7 @@ class Game < ActiveRecord::Base
   # using the TEAM_NAMES array, create teams for the game
   def create_teams
     number_of_teams.to_i.times do |i|
-      self.teams << Team.create(:name => TEAM_NAMES[i])
+      self.teams << Team.create!(:name => TEAM_NAMES[i])
     end
   end
 
@@ -174,8 +164,7 @@ class Game < ActiveRecord::Base
   def expected_end_time
     self.start_time + self.time_limit.minutes if self.start_time and self.time_limit
   end
-
-  # check to see if the game is active
+    
   def has_ended?
     !self.end_time.blank? and Time.now > self.end_time
   end
@@ -205,6 +194,11 @@ class Game < ActiveRecord::Base
     end  
     game
   end
+  
+  # are there any captures yet?
+  def first_capture?
+    self.captures.empty?
+  end
 
   # special method for collections weirdness
   def cluster_ids
@@ -219,8 +213,4 @@ class Game < ActiveRecord::Base
     end
   end
 
-  # are there any captures yet?
-  def first_capture?
-    self.captures.empty?
-  end
 end

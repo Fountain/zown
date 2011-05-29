@@ -12,3 +12,41 @@
 	<br />
 	<%= f.submit %>
 <% end %>
+
+<hr />
+<%= render :partial => 'games/game_nav'%>
+
+<table>
+  <tr>
+	<th>Teams (<%= @teams.size %>)</th>
+	<th>Total Time</th>
+	<th>Total Captures</th>
+  </tr>
+
+<% @teams.each do |name| %>
+  <tr class="<%= cycle("even", "odd") %>">
+	<td><%= name %></td>
+	<td>[20] seconds</td>
+	<td>[3]</td>	  
+  </tr>
+<% end %>
+</table>
+
+<table>
+  <tr>
+	<th>Zown</th>
+	<th>Red</th>
+	<th>Blue</th>
+	<th>Yellow</th>
+  </tr>
+
+<% @number_of_zowns.times do |number| %>
+  <tr class="<%= cycle("even", "odd") %>">
+	<% number += 1%>
+	<td>Zown <%= number %></td>
+	<td><%= radio_button("post", number, "red") %></td>
+	<td><%= radio_button("post", number, "blue") %></td>
+	<td><%= radio_button("post", number, "yellow") %></td>	  
+  </tr>
+<% end %>
+</table>

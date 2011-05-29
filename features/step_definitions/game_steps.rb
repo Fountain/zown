@@ -102,7 +102,8 @@ Then /^I am told there is no game available at this time$/ do
 end
 
 Then /^I am unsubscribed from the system$/ do
-  !Runner.where(:mobile_number => @mobile_number).exists?.should be_true
+  pending
+  Runner.where(:mobile_number => @mobile_number).exists?.should be_false
 end
 
 Given /^there is an active game$/ do
@@ -155,15 +156,27 @@ Then /^I am assigned to team red$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Given /^I belong to a team$/ do
-  pending # express the regexp above with the code you wish you had
+Given /^I belong to the "(\w+)" team$/ do |team_name|
+  pending
+  teams = Game.active_game.teams
+  teams.should_not be_empty
+  team = teams.where(:name => team_name)
+  team = should_not be_nil
+  @runner.team = team
+  @runner.save!
 end
 
 Given /^the game I belong to has not begun$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^I am added switched to the other team$/ do
+Given /^that games teams should have names$/ do
+  @game.teams.size.should == 2
+  @game.teams[0].name.should == 'red'
+  @game.teams[1].name.should == 'blue'
+end
+
+Then /^I am switched to the other team$/ do
   pending # express the regexp above with the code you wish you had
 end
 
@@ -200,7 +213,6 @@ Then /^a new game is created with the same settings as the last game$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-#AF CHECK
 When /^I abort my current game$/ do
   @game.abort!
 end
@@ -231,7 +243,6 @@ When /^I create a new Node$/ do
 end
 
 Then /^a new code set is assigned to that Node$/ do
-  # pending # express the regexp above with the code you wish you had
   node_size = Node::CODE_COUNT
   @node.codes.size.should == node_size
 end

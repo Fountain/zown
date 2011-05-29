@@ -6,6 +6,12 @@ class CapturesController < ApplicationController
   
   def new
     @capture = Capture.new
+    #for test view mockup only
+    @teams_size = 3
+    @teams = ['red', 'blue', 'yellow']
+    @times = ['24', '320', '156']
+    @captures = ['5', '9', '6']
+    @number_of_zowns = 12
   end
   
   def create
