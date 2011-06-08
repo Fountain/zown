@@ -111,9 +111,13 @@ class Game < ActiveRecord::Base
         # move them from the largest team to the smallest team
         runner = biggest_team.runners.last
         smallest_team.runners << runner
+        
+        # send alert to affected Runners
+        message = "You have been switched to #{runner.team.name} team."
+        Messaging.outgoing_sms(runner.mobile_number, message)
       end
     end while biggest_team.runners.size > target_number
-    # send alert to affected Runners
+    
   end
 
   # before creating a new game check to see if one is currently in progress

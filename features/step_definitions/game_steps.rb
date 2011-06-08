@@ -230,6 +230,7 @@ Then /^the game is ended$/ do
 end
 
 When /^I balance teams$/ do
+  stub_request(:post, /twilio\.com/)
   Game.active_game.balance_teams
 end
 
@@ -291,4 +292,9 @@ Then /^(\w+) team should have (\d+) runners$/ do |color, expected_runners|
   team = @game.team_by_color(color)
   team.runners.size.should == expected_runners.to_i
 end
+
+Then /^(\d+) messages should have been sent$/ do |expected_message_count|
+  a_request(:post, /twilio\.com/).should have_been_made.times(expected_message_count)
+end
+
 

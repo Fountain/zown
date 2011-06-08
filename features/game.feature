@@ -130,6 +130,21 @@ Feature: Game
 		And there is an active game
 		When I end my current game
 		Then the game is ended
+	
+	Scenario Outline: Balancing Two Teams	
+		Given I am a captain
+		And there is an active game
+		And there are two teams
+		And the red team has <red_start_count> runners
+		And the blue team has <blue_start_count> runners
+		When I balance teams
+		Then <expected_message_count> messages should have been sent
+		
+		Examples:
+			| red_start_count | blue_start_count | expected_message_count |
+			| 2	| 2 | 0 |
+			| 2 | 3 | 0 | 
+			| 4 | 10 | 3 |
 		
 	Scenario Outline: Balancing Two Teams	
 		Given I am a captain
