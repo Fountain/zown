@@ -97,15 +97,23 @@ class Game < ActiveRecord::Base
   
 #AF Check 
   def balance_teams
-    # get all game for team
-    #teams = self.teams
-    #teams.each do |team|
-    # get the total of each team
-    # remove a Runner from the team with the most Runners
-    # add that Runner to the team with fewer Runners
-    # repeat until the teams are even or only one player apart
+    # get all team sizes
+    teams = self.teams
+    # keep balancing teams until all are balanced 
+    begin
+      teams.sort_by!{|team| team.runners.size}
+      average_runners_per_team = self.runners.size / self.teams.size.to_f
+      target_number = average_runners_per_team.ciel
+      smallest_team = teams.first
+      biggest_team = teams.last
+    
+      if biggest_team.runners.size > target_number
+        # move them from the largest team to the smallest team
+        runner = biggest_team.runners.last
+        smallest_team.runners << runner
+      end
+    end while biggest_team.runners.size > target_number
     # send alert to affected Runners
-    #end
   end
 
   # before creating a new game check to see if one is currently in progress
@@ -211,6 +219,18 @@ class Game < ActiveRecord::Base
       cluster = Cluster.find cluster_id
       self.nodes << cluster.nodes
     end
+  end
+  
+  def red_team
+    self.team_by_color('red')
+  end
+  
+  def blue_team
+    self.team_by_color('blue')
+  end
+  
+  def team_by_color(color)
+    self.teams.find_by_name(color)
   end
 
 end

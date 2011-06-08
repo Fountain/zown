@@ -56,3 +56,7 @@ if defined?(ActiveRecord::Base)
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
 end
+
+Factory.sequence :mobile_number do |n|
+  sprintf("+1%010d", n)
+end

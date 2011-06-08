@@ -131,11 +131,21 @@ Feature: Game
 		When I end my current game
 		Then the game is ended
 		
-	Scenario: Balancing Teams
+	Scenario Outline: Balancing Two Teams	
 		Given I am a captain
 		And there is an active game
+		And there are two teams
+		And the red team has <red_start_count> runners
+		And the blue team has <blue_start_count> runners
 		When I balance teams
-		Then the teams are balanced
+		Then red team should have <red_end_count> runners
+		And blue team should have <blue_end_count> runners
+		
+		Examples:
+			| red_start_count | blue_start_count | red_end_count | blue_end_count |
+			| 2	| 2 | 2 | 2 |
+			| 2 | 3 | 2 | 3 |
+			| 4 | 10 | 7 | 7 |
 		
 	Scenario: Create new Node
 		Given I am a captain

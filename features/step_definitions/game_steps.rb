@@ -272,3 +272,27 @@ end
 Then /^the game should end in (\d+) minutes$/ do |arg1|
   pending # express the regexp above with the code you wish you had
 end
+
+Given /^there are two teams$/ do
+  while @game.teams.size < 2
+    team = Team.create!
+    @game.teams << team
+  end
+end
+
+Given /^the (\w+) team has (\d+) runners$/ do |color, desired_runners|
+  team = @game.team_by_color(color)
+  while team.runners.size < desired_runners.to_i
+    runner = Runner.create! (:mobile_number => Factory.next(:mobile_number))
+    team.runners << runner
+  end
+end
+
+Then /^red team should have (\d+) runners$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^blue team should have (\d+) runners$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
