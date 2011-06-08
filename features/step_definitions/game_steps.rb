@@ -230,8 +230,7 @@ Then /^the game is ended$/ do
 end
 
 When /^I balance teams$/ do
-  pending # express the regexp above with the code you wish you had
-  @game.balance_teams
+  Game.active_game.balance_teams
 end
 
 Then /^the teams are balanced$/ do
@@ -288,11 +287,8 @@ Given /^the (\w+) team has (\d+) runners$/ do |color, desired_runners|
   end
 end
 
-Then /^red team should have (\d+) runners$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^blue team should have (\d+) runners$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then /^(\w+) team should have (\d+) runners$/ do |color, expected_runners|
+  team = @game.team_by_color(color)
+  team.runners.size.should == expected_runners.to_i
 end
 

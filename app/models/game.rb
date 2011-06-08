@@ -101,9 +101,9 @@ class Game < ActiveRecord::Base
     teams = self.teams
     # keep balancing teams until all are balanced 
     begin
-      teams.sort_by!{|team| team.runners.size}
+      team = teams.sort_by{|team| team.runners.size}
       average_runners_per_team = self.runners.size / self.teams.size.to_f
-      target_number = average_runners_per_team.ciel
+      target_number = average_runners_per_team.ceil
       smallest_team = teams.first
       biggest_team = teams.last
     
