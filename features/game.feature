@@ -61,11 +61,14 @@ Feature: Game
 		Then I am unsubscribed from the system
 		
 	Scenario: Capturing a Node
-		Given I am a Runner
-		And there is an active game
-		And I am a Runner in that game
-		When I submit a valid code
-		Then then my team controls that node
+		Given there is an active game with runners:
+			| mobile_number | team |
+			| +12223334444 | red |
+		And there is an uncaptured node with code:
+			| code |
+			| 1234 |
+		When I sms "1234" from +12223334444
+		Then then the node should be controlled by the blue team
 	
 	Scenario: Requesting stats
 		Given I am a Runner

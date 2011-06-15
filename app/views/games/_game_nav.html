@@ -1,1 +1,5 @@
-<p id='game_nav'>start game | end game | abort game | repeat game | balance teams</p>
+<p id='game_nav'>
+	<%= link_to_if(!@game.has_started?, 'start game', {:action => :start, :controller => :games}, :method => :put) %> | 
+	<%= link_to_if(!@game.has_ended?, 'end game', {:action => :end, :controller => :games}, :method => :put) %> |
+	<%= link_to_if(!@game.has_ended?, 'abort game', {:action => :abort, :controller => :games}, :method => :put) %> | repeat game |
+	<%= link_to_if(!@game.has_started?, 'balance teams', {:action => :balance_teams, :controller => :games}, :method => :put) %></p>

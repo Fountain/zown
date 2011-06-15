@@ -1,5 +1,5 @@
 class Node < ActiveRecord::Base
-  has_many :captures
+  has_many :captures, :order => :captured_at
   has_and_belongs_to_many :clusters
   belongs_to :game
   has_many :codes, :dependent => :destroy
@@ -7,6 +7,13 @@ class Node < ActiveRecord::Base
   after_create :assign_codes
   
   CODE_COUNT = 128
+  
+  
+  def current_team
+    captures = self.captures.where :game_id => self.game.id
+    last_capture = captures.last
+    last_capture.nil? ? nil : last_capture.team
+  end
   
   # get the cumulative time for node
   # TODO add temporary capture at end for measuring purposes

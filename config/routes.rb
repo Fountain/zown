@@ -2,7 +2,12 @@ Zown::Application.routes.draw do
   resources :games do
     member do
      get :join
-     put :join_game 
+     put :join_game
+     put :start
+     put :end
+     put :abort
+     put :repeat
+     put :balance_teams 
     end
   end
   resources :captures

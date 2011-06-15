@@ -112,18 +112,6 @@ Given /^there is an active game$/ do
   @game.is_active?.should == true
 end
 
-Given /^I am a Runner in that game$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-When /^I submit a valid code$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
-Then /^then my team controls that node$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 When %r{^I request "([^"]*)"$} do |arg1|
   pending # express the regexp above with the code you wish you had
 end
@@ -295,6 +283,35 @@ end
 
 Then /^(\d+) messages should have been sent$/ do |expected_message_count|
   a_request(:post, /twilio\.com/).should have_been_made.times(expected_message_count)
+end
+
+Given /^there is an active game with runners:$/ do |table|
+  # table is a Cucumber::Ast::Table
+  @game = Game.create!
+  table.hashes.each do |runner_hash|
+    runner = Runner.new(:mobile_number => runner_hash[:mobile_number])
+    runner.team = @game.team_by_color(runner_hash[:team])
+    runner.save!
+  end
+end
+
+Given /^there is an uncaptured node with code:$/ do |table|
+  # table is a Cucumber::Ast::Table
+  @node = Node.create!
+  table.hashes.each do |code_hash|
+    num = code_hash[:code]
+    code = Code.new(:contents => num)
+    @node.codes << code
+  end
+  @game.nodes << @node
+end
+
+Then /^then the node should be controlled by the (\w+) team$/ do |color|
+  # get updated model from the database
+  @node.reload
+  
+  team = @game.team_by_color(color)
+  @node.current_team.should == team
 end
 
 

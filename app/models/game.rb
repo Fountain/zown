@@ -95,7 +95,6 @@ class Game < ActiveRecord::Base
     puts "The game has ended at + #{self.end_time}"
   end
   
-#AF Check 
   def balance_teams
     # get all team sizes
     teams = self.teams

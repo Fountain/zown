@@ -2,6 +2,7 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.xml
   
+  # respond_to :html, :xml, :js
   
   def join
     @game = Game.find params[:id]
@@ -100,6 +101,46 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(games_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def start
+    @game = Game.find(params[:id])
+    @game.start!
+    
+    respond_to do |format|
+      format.html { redirect_to(@game, :notice => 'Game was successfully started.')  }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def end
+    @game = Game.find(params[:id])
+    @game.end!
+    
+    respond_to do |format|
+      format.html { redirect_to(@game, :notice => 'Game was successfully ended.')  }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def abort
+    @game = Game.find(params[:id])
+    @game.abort!
+    
+    respond_to do |format|
+      format.html { redirect_to(@game, :notice => 'Game was successfully started.')  }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def balance
+    @game = Game.find(params[:id])
+    @game.balance_teams
+
+    respond_to do |format|
+      format.html { redirect_to(@game, :notice => 'Game was successfully balanced.')  }
       format.xml  { head :ok }
     end
   end
