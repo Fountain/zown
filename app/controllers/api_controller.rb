@@ -48,7 +48,7 @@ class ApiController < ApplicationController
           outgoing_message += "There are no active games. Hang tight."
         else 
           runner.join_game_auto_assign_team!
-          outgoing_message += "Added to #{runner.team.to_s}" 
+          outgoing_message += "Added to #{runner.current_team.to_s}" 
         end 
       elsif message =~ /^join (.+)$/i
         if Game.unstarted_games.empty?
@@ -56,7 +56,7 @@ class ApiController < ApplicationController
         else
           team_name = $1
           runner.join_team!(team_name)
-          outgoing_message += "Joined #{runner.team.to_s}"
+          outgoing_message += "Joined #{runner.current_team.to_s}"
         end
       elsif authenticate_code(runner, message)
         # successfully captured
@@ -84,7 +84,7 @@ class ApiController < ApplicationController
       end
       # if code is good, create code
       # TODO abstract to Runner class (take a code as argument)
-      capture = Capture.new(:node => node, :runner => runner, :game => game, :team => runner.team)
+      capture = Capture.new(:node => node, :runner => runner, :game => game, :team => runner.current_team)
       if capture.save
         # returns true        
       else

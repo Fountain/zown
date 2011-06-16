@@ -2,7 +2,7 @@ class Game < ActiveRecord::Base
   has_many :captures
   has_many :teams
   has_many :nodes
-  has_many :runners, :through => :teams
+  # has_many :runners, :through => :teams
 
   before_create :create_teams
 
@@ -20,6 +20,10 @@ class Game < ActiveRecord::Base
   def code_already_used?(code)
     self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
   end
+  
+  #def runners
+  # self.teams.reduce([]){|runners, team| runners + (team.runners)}
+  #end
 
   # update each team's time after a capture is created
   def current_aggregate_times
@@ -112,7 +116,7 @@ class Game < ActiveRecord::Base
         smallest_team.runners << runner
         
         # send alert to affected Runners
-        message = "You have been switched to #{runner.team.name} team."
+        message = "You have been switched to #{runner.current_team.name} team."
         Messaging.outgoing_sms(runner.mobile_number, message)
       end
     end while biggest_team.runners.size > target_number

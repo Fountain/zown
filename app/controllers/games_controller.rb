@@ -17,7 +17,7 @@ class GamesController < ApplicationController
     
     # assign runner to smallest team
     if @runner.save
-        format.html { redirect_to(capture_path, :notice => "Game was successfully joined. You are on team #{@runner.team}") }
+        format.html { redirect_to(capture_path, :notice => "Game was successfully joined. You are on team #{@runner.current_team}") }
       else
         format.html { render :action => "join" }
       end

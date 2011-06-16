@@ -150,7 +150,7 @@ Given /^I belong to the "(\w+)" team$/ do |team_name|
   teams.should_not be_empty
   team = teams.where(:name => team_name)
   team = should_not be_nil
-  @runner.team = team
+  @runner.current_team = team
   @runner.save!
 end
 
@@ -194,7 +194,7 @@ Then /^the game should be active$/ do
 end
 
 When /^I repeat the last game$/ do
-  pending # express the regexp above with the code you wish you had
+  @game.repeat_game
 end
 
 Then /^a new game is created with the same runners on the same teams$/ do
@@ -271,7 +271,7 @@ end
 Given /^the (\w+) team has (\d+) runners$/ do |color, desired_runners|
   team = @game.team_by_color(color)
   while team.runners.size < desired_runners.to_i
-    runner = Runner.create! (:mobile_number => Factory.next(:mobile_number))
+    runner = Runner.create!(:mobile_number => Factory.next(:mobile_number))
     team.runners << runner
   end
 end
@@ -290,7 +290,7 @@ Given /^there is an active game with runners:$/ do |table|
   @game = Game.create!
   table.hashes.each do |runner_hash|
     runner = Runner.new(:mobile_number => runner_hash[:mobile_number])
-    runner.team = @game.team_by_color(runner_hash[:team])
+    runner.current_team = @game.team_by_color(runner_hash[:team])
     runner.save!
   end
   @game.start!
@@ -322,7 +322,7 @@ Given /^there is an ended game with runners:$/ do |table|
   @game = Game.create!
   table.hashes.each do |runner_hash|
     runner = Runner.new(:mobile_number => runner_hash[:mobile_number])
-    runner.team = @game.team_by_color(runner_hash[:team])
+    runner.current_team = @game.team_by_color(runner_hash[:team])
     runner.save!
   end
   stub_request(:post, /twilio\.com/)

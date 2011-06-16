@@ -22,7 +22,7 @@ Given /^team one captured that node at$/ do |table|
       capture.node = @node
       capture.runner = @runner1
       capture.created_at = time
-      capture.team = @runner1.team
+      capture.team = @runner1.current_team
     capture.save!
   end
 end
@@ -37,7 +37,7 @@ When /^team two captured that node at$/ do |table|
       capture.node = @node
       capture.runner = @runner2
       capture.created_at = time
-      capture.team = @runner2.team
+      capture.team = @runner2.current_team
     capture.save!
   end
 end

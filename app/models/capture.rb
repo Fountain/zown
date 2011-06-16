@@ -34,7 +34,7 @@ class Capture < ActiveRecord::Base
   
   #ensure that team is associated with capture
   def assign_team_from_runner
-    self.team ||= self.runner.team # same as self.team = self.runner.team if self.team.nil?
+    self.team ||= self.runner.team # same as self.team = self.runner.current_team if self.team.nil?
   end
   
   def update_aggregate_times!
