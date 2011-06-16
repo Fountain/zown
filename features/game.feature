@@ -63,12 +63,13 @@ Feature: Game
 	Scenario: Capturing a Node
 		Given there is an active game with runners:
 			| mobile_number | team |
-			| +12223334444 | red |
+			| +12223334444 | blue |
 		And there is an uncaptured node with code:
 			| code |
 			| 1234 |
 		When I sms "1234" from +12223334444
-		Then then the node should be controlled by the blue team
+		Then +12223334444 should have 1 capture
+		And then the node should be controlled by the blue team
 	
 	Scenario: Requesting stats
 		Given I am a Runner
@@ -119,8 +120,11 @@ Feature: Game
 		
 	Scenario: Repeating the last game
 		Given I am a captain
+		And there is an ended game with runners:
+			| mobile_number | team |
+			| +12223334444 | red |
 		When I repeat the last game
-		Then a new game is created with the same settings as the last game
+		Then a new game is created with the same runners on the same teams
 		
 	Scenario: Aborting a game
 		Given I am a captain

@@ -39,31 +39,36 @@ class ApiController < ApplicationController
       outgoing_message += "Hello runner. You've been added to the system. "
     end
 
-    unless Game.unstarted_games.empty?
-      message.strip!
-      begin
-        # stuff that might throw exceptions  
-        if message =~ /^join$/i
-          # join game and auto assign team
+    message.strip!
+    begin
+      # stuff that might throw exceptions  
+      if message =~ /^join$/i
+        # join game and auto assign team
+        if Game.unstarted_games.empty?
+          outgoing_message += "There are no active games. Hang tight."
+        else 
           runner.join_game_auto_assign_team!
-          outgoing_message += "Added to #{runner.team.to_s}"  
-        elsif message =~ /^join (.+)$/i
+          outgoing_message += "Added to #{runner.team.to_s}" 
+        end 
+      elsif message =~ /^join (.+)$/i
+        if Game.unstarted_games.empty?
+          outgoing_message += "There are no active games. Hang tight."
+        else
           team_name = $1
           runner.join_team!(team_name)
-          outgoing_message = "Joined #{runner.team.to_s}"
-        elsif authenticate_code(runner, message)
-          # successfully captured
-          outgoing_message += "zown succesfully captured" 
-        else
-         outgoing_message += "message unclear, try again"
+          outgoing_message += "Joined #{runner.team.to_s}"
         end
-      rescue RuntimeError => e
-        # do stuff with excpetions
-        outgoing_message = e.to_s
+      elsif authenticate_code(runner, message)
+        # successfully captured
+        outgoing_message += "zown succesfully captured" 
+      else
+       outgoing_message += "message unclear, try again"
       end
-    else
-      outgoing_message += "There are no active games. Hang tight."
+    rescue RuntimeError => e
+      # do stuff with excpetions
+      outgoing_message = e.to_s
     end
+    
     outgoing_message
   end
   

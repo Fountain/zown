@@ -119,6 +119,10 @@ class Game < ActiveRecord::Base
     
   end
 
+  def repeat_game
+    true
+  end
+  
   # before creating a new game check to see if one is currently in progress
   def check_for_active_game
     # TODO

@@ -197,8 +197,8 @@ When /^I repeat the last game$/ do
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^a new game is created with the same settings as the last game$/ do
-  pending # express the regexp above with the code you wish you had
+Then /^a new game is created with the same runners on the same teams$/ do
+  Game.last.teams.should be_equal @game.teams
 end
 
 When /^I abort my current game$/ do
@@ -293,6 +293,7 @@ Given /^there is an active game with runners:$/ do |table|
     runner.team = @game.team_by_color(runner_hash[:team])
     runner.save!
   end
+  @game.start!
 end
 
 Given /^there is an uncaptured node with code:$/ do |table|
@@ -311,7 +312,25 @@ Then /^then the node should be controlled by the (\w+) team$/ do |color|
   @node.reload
   
   team = @game.team_by_color(color)
+  team.nodes.should_not be_empty
+  @node.current_team.should_not be_nil
   @node.current_team.should == team
 end
 
+Given /^there is an ended game with runners:$/ do |table|
+  # table is a Cucumber::Ast::Table
+  @game = Game.create!
+  table.hashes.each do |runner_hash|
+    runner = Runner.new(:mobile_number => runner_hash[:mobile_number])
+    runner.team = @game.team_by_color(runner_hash[:team])
+    runner.save!
+  end
+  stub_request(:post, /twilio\.com/)
+  @game.end!
+end
+
+Then /^(\+\d+) should have 1 capture$/ do |mobile_number|
+  @runner = Runner.find_by_mobile_number(mobile_number)
+  @runner.captures.size.should == 1
+end
 
