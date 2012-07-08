@@ -22,7 +22,7 @@ class Runner < ActiveRecord::Base
   end
   
   def captures_in_current_game
-    game_id = self.game.id
+    game_id = self.current_game.id
     self.captures.find_all_by_game_id(game_id)
   end
   
