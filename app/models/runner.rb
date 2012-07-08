@@ -49,7 +49,14 @@ class Runner < ActiveRecord::Base
   end
   
   def current_game
-    self.games.where(:id => Game.active_game).last
+    # self.games.where(:id => Game.active_game).last
+    
+    active_game = Game.active_game
+    if self.games.include?(active_game)
+      active_game
+    else
+      nil
+    end
   end
   
 end
