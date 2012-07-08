@@ -2,7 +2,6 @@ class Game < ActiveRecord::Base
   has_many :captures
   has_many :teams
   has_many :nodes
-  # has_many :runners, :through => :teams
 
   before_create :create_teams
 
@@ -21,9 +20,10 @@ class Game < ActiveRecord::Base
     self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
   end
   
-  #def runners
-  # self.teams.reduce([]){|runners, team| runners + (team.runners)}
-  #end
+  # collect runners here instead of using association
+  def runners
+    self.teams.reduce([]){|runners, team| runners + (team.runners) }
+  end
 
   # update each team's time after a capture is created
   def current_aggregate_times

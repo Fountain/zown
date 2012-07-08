@@ -1,7 +1,12 @@
 class Runner < ActiveRecord::Base
   has_and_belongs_to_many :teams
   has_many :captures
-  has_many :games, :through => :teams
+
+  # couldn't figure out how to retrieve the user's games through associations,
+  # so just collect the games from each team here
+  def games
+    self.teams.map{|team| team.game }
+  end
   
   validates_presence_of :mobile_number
 #  validates_format_of :mobile_number, :with => /^(?:(\d)[ \-\.]?)?(?:\(?(\d{3})\)?[ \-\.])?(\d{3})[ \-\.](\d{4})(?: ?x?(\d+))?$/
