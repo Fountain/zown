@@ -48,4 +48,8 @@ class Runner < ActiveRecord::Base
     self.teams << team
   end
   
+  def current_game
+    self.games.where(:id => Game.active_game).last
+  end
+  
 end
