@@ -37,7 +37,8 @@ class Runner < ActiveRecord::Base
   end
   
   def current_team
-    self.teams.where(:game_id => Game.active_game).last
+    #TODO this will show as current team even after the game has ended
+    self.teams.last
   end
   
   def current_team=(team)
@@ -50,13 +51,8 @@ class Runner < ActiveRecord::Base
   
   def current_game
     # self.games.where(:id => Game.active_game).last
-    
-    active_game = Game.active_game
-    if self.games.include?(active_game)
-      active_game
-    else
-      nil
-    end
+    game = self.games.last
+    game.has_ended? ? nil : game
   end
   
 end

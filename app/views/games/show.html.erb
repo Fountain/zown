@@ -4,8 +4,11 @@
 
 <strong>Winning Team: <%#= @game.winning_team %></strong>
 <% if @game.has_ended? %>
-<p><%= @game.start_time.strftime("Start: %I:%M%p") %> | <%= @game.end_time.strftime("End: %I:%M%p") %>
-	| <%= @game.end_time.strftime("Date: %m/%d/%y") %></p>
+<p>
+	<%= @game.start_time.strftime("Start: %I:%M%p") if @game.start_time %> |
+	<%= @game.end_time.strftime("End: %I:%M%p") if @game.end_time  %> |
+	<%= @game.end_time.strftime("Date: %m/%d/%y") if @game.end_time %>
+</p>
 <% end %>
 
 <table>
