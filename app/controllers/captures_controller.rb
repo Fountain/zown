@@ -50,7 +50,6 @@ class CapturesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(captures_url) }
-      format.xml  { head :ok }
     end
   end
   

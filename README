@@ -3,6 +3,23 @@ This is the web application portion of the game Zown. Zown is an outdoor game wh
 
 This app is currently in development. It will be awesome when I'm done.
 
+Player Actions:
+join - joins the team with the least players
+join [team name] - joins a team by a specific name
+quit - quits the player's current game
+unsub - unsubscribes from all communications
+
+Admin Actions:
+start game - starts the active game
+abort game - ends the game in progress
+end game - ends the current game in progress and messages all players the outcome
+repeat game - creates a new game with the same variables as the last
+balance teams - balances the number of players on each team
+
 TODO
+* End messages not going out properly
+* system thinks codes are already being used
+* reset_nodes
+
 * Add repeat game
-* add security
+* Add security

@@ -106,7 +106,7 @@ class Node < ActiveRecord::Base
    end
   
   def current_owner
-    capture = self.captures.order("created_at").last 
+    capture = self.captures.where(:game_id => Game.active_game).last 
     capture.team if capture
   end
 end

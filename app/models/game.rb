@@ -88,7 +88,8 @@ class Game < ActiveRecord::Base
     # message all runners that the game is over
     outgoing_message = "The game is over. #{self.winning_team} has won."
     self.runners.each do |runner|
-      Messaging.outgoing_sms(runner, outgoing_message)
+      logger.debug "Game attributes hash: #{runner.mobile_number}" 
+      Messaging.outgoing_sms(runner.mobile_number, outgoing_message)
     end
   end
   
@@ -125,6 +126,8 @@ class Game < ActiveRecord::Base
 
   def repeat_game
     true
+    # get last game
+    # create a new game with same settings
   end
   
   # before creating a new game check to see if one is currently in progress
@@ -136,6 +139,7 @@ class Game < ActiveRecord::Base
   # TODO
   def reset_nodes
     # get all nodes for the active game
+    self.nodes.update_all(:game_id => nil) 
     # reset ownership for all nodes
   end
 

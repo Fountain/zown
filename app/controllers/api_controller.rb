@@ -48,7 +48,7 @@ class ApiController < ApplicationController
           outgoing_message += "There are no active games. Hang tight."
         else 
           runner.join_game_auto_assign_team!
-          outgoing_message += "You are on team #{runner.current_team.to_s}" 
+          outgoing_message += "You are on #{runner.current_team.to_s}" 
         end 
       elsif message =~ /^join (.+)$/i
         if Game.unstarted_games.empty?
