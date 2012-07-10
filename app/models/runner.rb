@@ -16,7 +16,7 @@ class Runner < ActiveRecord::Base
   end
   
   def join_game_auto_assign_team!
-    game = Game.unstarted_games.first
+    game = Game.unstarted_games.last
     self.assign_to_smallest_team(game)
     self.save!
   end

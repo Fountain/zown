@@ -2,6 +2,7 @@ class NodesController < ApplicationController
   # GET /nodes
   # GET /nodes.xml
   def index
+    @title = "zown | nodes"
     @nodes = Node.all
 
     respond_to do |format|
@@ -14,7 +15,8 @@ class NodesController < ApplicationController
   # GET /nodes/1.xml
   def show
     @node = Node.find(params[:id])
-
+    @title = "zown | " + @node.name
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @node }

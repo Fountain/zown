@@ -26,6 +26,7 @@ class GamesController < ApplicationController
   end
    
   def index
+    @title = "zown | games"
     @games = Game.order("created_at DESC").all
 
     respond_to do |format|
@@ -38,6 +39,7 @@ class GamesController < ApplicationController
   # GET /games/1.xml
   def show
     @game = Game.find(params[:id])
+    @title = "zown | game " + @game.id.to_s
 
     respond_to do |format|
       format.html # show.html.erb

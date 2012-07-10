@@ -2,6 +2,7 @@ class RunnersController < ApplicationController
   # GET /runners
   # GET /runners.xml
   def index
+    @title = "zown | runners"
     @runners = Runner.all
 
     respond_to do |format|

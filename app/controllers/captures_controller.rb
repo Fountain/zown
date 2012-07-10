@@ -1,10 +1,16 @@
 class CapturesController < ApplicationController
   
+  def message
+    @title = "zown | New Capture"
+  end
+  
   def index
+    @title = "zown | Captures"
     @captures = Capture.order("created_at DESC").all
   end
   
   def new
+    @title = "zown | New Capture"
     @capture = Capture.new
     #for test view mockup only
     @teams_size = 3

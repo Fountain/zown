@@ -17,7 +17,8 @@ class Game < ActiveRecord::Base
   scope :unstarted_games, where(['start_time IS NULL OR start_time < ?', Time.now])
   
   def code_already_used?(code)
-    self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
+    false
+    #self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
   end
   
   # collect runners here instead of using association
