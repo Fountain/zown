@@ -30,6 +30,7 @@ gem 'default_value_for'
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'ruby-debug'
+  gem 'timecop'
 
   # Cucumber stuff
   gem 'capybara'
