@@ -10,22 +10,23 @@ class Node < ActiveRecord::Base
   
   
   def current_team
-    captures = self.captures.where :game_id => self.game.id
-    last_capture = captures.last
+    last_capture = self.current_game_captures.last
     last_capture.nil? ? nil : last_capture.team
+  end
+  
+  def current_game_captures
+    self.captures.where :game_id => self.game
   end
   
   # get the cumulative time for node
   # TODO add temporary capture at end for measuring purposes
   def cumulative_times
-    # get all captures with in the current game 
-    captures = self.captures.where :game_id => self.game.id
     # create a time holder for each team
     times = {}
     self.game.teams.each {|team| times[team] = 0 }
     # go through each capture
     last_capture = nil
-    captures.each_with_index do |capture, i| 
+    self.current_game_captures.each_with_index do |capture, i| 
       # unless this is the first time this node has been captured
       unless last_capture.nil?        
         # find the difference between the current capture and the last
@@ -106,7 +107,7 @@ class Node < ActiveRecord::Base
    end
   
   def current_owner
-    capture = self.captures.where(:game_id => Game.active_game).first 
+    capture = self.current_game_captures.first 
     capture.team if capture
   end
 end

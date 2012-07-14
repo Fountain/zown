@@ -1,13 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  game_id: 1
-  runner_id: 1
-  node_id: 1
-  captured_at: 2010-09-08 22:01:09
-
-two:
-  game_id: 1
-  runner_id: 1
-  node_id: 1
-  captured_at: 2010-09-08 22:01:09
+# 
+# one:
+#   game_id: 1
+#   runner_id: 1
+#   node_id: 1
+#   captured_at: 2010-09-08 22:01:09
+# 
+# two:
+#   game_id: 1
+#   runner_id: 1
+#   node_id: 1
+#   captured_at: 2010-09-08 22:01:09

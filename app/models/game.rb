@@ -26,11 +26,8 @@ class Game < ActiveRecord::Base
     self.teams.reduce([]){|runners, team| runners + (team.runners) }
   end
 
-  # update each team's time after a capture is created
+  # retrieve the running aggregate time for each team
   def current_aggregate_times
-    # get all nodes for current game
-    nodes = self.nodes
-    
     # last_capture = Game.find(self.id).captures.last
     # set update reference time to last capture
     current_time = Time.now #last_capture.created_at #self.captures.last.created_at
@@ -39,31 +36,18 @@ class Game < ActiveRecord::Base
     # populating the hash
     self.teams.each{|team| team_hash[team.id] = team.aggregate_time }
     
-    # for each node, 
-    nodes.each do |node|
-      previous_capture = self.captures[-2]
-      # if there's a second to last capture
-      if previous_capture
-        team_id = previous_capture.team.id
-        # compute (current_time - Capture.last.created_at)
-        time_to_add = current_time - previous_capture.created_at  
+    # for each node in current game
+    self.nodes.each do |node|
+      last_capture = self.captures.last
+      if last_capture
+        team_id = last_capture.team.id
+        time_to_add = current_time - last_capture.created_at  
         # update the aggregate time
         team_hash[team_id] += time_to_add
-        # save the record
-        # team.save
       end
     end
     
     team_hash
-  end
-  
-  def update_aggregate_times!
-    times_hash = self.current_aggregate_times
-    times_hash.each do |team_id, new_time|
-      team = Team.find(team_id)
-      team.aggregate_time = new_time
-      team.save!
-    end
   end
   
   def start!
@@ -145,13 +129,9 @@ class Game < ActiveRecord::Base
   end
 
   def winning_team
-    max = self.cumulative_team_times.max do |ob1, ob2|
-      time1 = ob1[1]
-      time2 = ob2[1]
-      time1 <=> time2
-    end
-    # [team, time]
-    max[0] # team
+    puts self.current_aggregate_times.inspect
+    # return the team with the max aggregate time
+    self.current_aggregate_times.max{|a,b| a[1] <=> b[1]}[0]
   end
 
   # using the TEAM_NAMES array, create teams for the game
@@ -159,24 +139,6 @@ class Game < ActiveRecord::Base
     number_of_teams.to_i.times do |i|
       self.teams << Team.create!(:name => TEAM_NAMES[i])
     end
-  end
-
-  # returns a hash of teams and total times
-  # this method is deprecated
-  def cumulative_team_times
-    # get all nodes in this game
-    nodes = self.nodes
-    # create team times holder
-    times = {}
-    self.teams.each {|team| times[team] = 0}
-    # run cumulative_times on each
-    nodes.each do |node|
-      node_times = node.cumulative_times
-      # add up cumulative times and assign to each team
-      node_times.each {|team, time| times[team] += time }
-    end
-    # return hash of team times
-    times
   end
 
   def add_cluster(cluster)

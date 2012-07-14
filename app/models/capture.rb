@@ -6,17 +6,19 @@ class Capture < ActiveRecord::Base
   
   before_save :start_game_if_not_started
   before_save :assign_team_from_runner
-  after_create :update_aggregate_times!
+  before_create :update_last_team_aggregate
   
   validates_presence_of :game, :runner, :node, :team, :message => "can't be found"
   validate :game_is_active
 #  validate :mobile_number_is_valid
  
- def parse_sms
-   # command_words = %w[join, game, abort, end,]
- end
+  def parse_sms
+    # command_words = %w[join, game, abort, end,]
+  end
+  
   
   private
+  
   def game_is_active
     errors.add(:game, 'must be active') unless game && game.is_active?
   end
@@ -37,8 +39,15 @@ class Capture < ActiveRecord::Base
     self.team ||= self.runner.team # same as self.team = self.runner.current_team if self.team.nil?
   end
   
-  def update_aggregate_times!
-    self.game.update_aggregate_times!
+  def update_last_team_aggregate
+    last_capture = self.node.captures.last
+    if last_capture
+      team = last_capture.team
+      
+      duration = Time.now - last_capture.created_at
+      team.aggregate_time += duration
+      team.save!
+    end
   end
   
 end
