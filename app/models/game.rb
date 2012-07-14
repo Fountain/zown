@@ -18,6 +18,7 @@ class Game < ActiveRecord::Base
   
   def code_already_used?(code)
     false
+    # if 
     #self.captures.any?{|cap| cap.node.codes.any?{|c| c.contents == code.contents}}
   end
   
@@ -34,16 +35,15 @@ class Game < ActiveRecord::Base
     
     team_hash = {} # {1 => 300(s), 2 => 0(s), ...}
     # populating the hash
-    self.teams.each{|team| team_hash[team.id] = team.aggregate_time }
+    self.teams.each{|team| team_hash[team] = team.aggregate_time }
     
     # for each node in current game
     self.nodes.each do |node|
       last_capture = self.captures.last
       if last_capture
-        team_id = last_capture.team.id
         time_to_add = current_time - last_capture.created_at  
         # update the aggregate time
-        team_hash[team_id] += time_to_add
+        team_hash[last_capture.team] += time_to_add
       end
     end
     
@@ -71,7 +71,7 @@ class Game < ActiveRecord::Base
     self.abort!
     
     # message all runners that the game is over
-    outgoing_message = "The game is over. #{self.winning_team} has won."
+    outgoing_message = "The game is over. #{self.winning_team.name} has won."
     self.runners.each do |runner|
       logger.debug "Game attributes hash: #{runner.mobile_number}" 
       Messaging.outgoing_sms(runner.mobile_number, outgoing_message)
@@ -83,8 +83,9 @@ class Game < ActiveRecord::Base
     self.end_time = end_time
     self.save!
     
-    self.current_aggregate_times.each do |team_id, time|
-      Team.find(team_id).update_attribute('aggregate_time', time)
+    self.current_aggregate_times.each do |team, time|
+      team.aggregate_time = time
+      team.save!
     end
     
     self.reset_nodes

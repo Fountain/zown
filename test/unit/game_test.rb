@@ -9,49 +9,49 @@ class GameTest < ActiveSupport::TestCase
     runner1.join_game_auto_assign_team!
     runner2 = Runner.create! :mobile_number => '1234567899'
     runner2.join_game_auto_assign_team!
-    team1_id = runner1.current_team.id
-    team2_id = runner2.current_team.id
+    team1 = runner1.current_team
+    team2 = runner2.current_team
     game.start!
     
     times = game.current_aggregate_times
-    assert_equal 0.seconds, times[team1_id]
-    assert_equal 0.seconds, times[team2_id]
+    assert_equal 0.seconds, times[team1]
+    assert_equal 0.seconds, times[team2]
     
     runner1.capture node
     
     times = game.reload.current_aggregate_times
-    assert_in_delta 0.seconds, times[team1_id], 1.second
-    assert_equal 0.seconds, times[team2_id]
+    assert_in_delta 0.seconds, times[team1], 1.second
+    assert_equal 0.seconds, times[team2]
     
     Timecop.travel(Time.now + 1.minute)
     
     times = game.current_aggregate_times
-    assert_in_delta 1.minute, times[team1_id], 1.second
-    assert_equal 0.seconds, times[team2_id]
+    assert_in_delta 1.minute, times[team1], 1.second
+    assert_equal 0.seconds, times[team2]
     
     runner2.capture node
     
     times = game.reload.current_aggregate_times
-    assert_in_delta 1.minute, times[team1_id], 1.second
-    assert_in_delta 0.seconds, times[team2_id], 1.second
+    assert_in_delta 1.minute, times[team1], 1.second
+    assert_in_delta 0.seconds, times[team2], 1.second
     
     Timecop.travel(Time.now + 1.minutes)
     
     times = game.reload.current_aggregate_times
-    assert_in_delta 1.minute, times[team1_id], 1.second
-    assert_in_delta 1.minute, times[team2_id], 1.second
+    assert_in_delta 1.minute, times[team1], 1.second
+    assert_in_delta 1.minute, times[team2], 1.second
     
     runner1.capture node
     
     times = game.reload.current_aggregate_times
-    assert_in_delta 1.minute, times[team1_id], 1.second
-    assert_in_delta 1.minute, times[team2_id], 1.second
+    assert_in_delta 1.minute, times[team1], 1.second
+    assert_in_delta 1.minute, times[team2], 1.second
     
     Timecop.travel(Time.now + 2.minutes)
 
     times = game.current_aggregate_times
-    assert_in_delta 3.minute, times[team1_id], 1.second
-    assert_in_delta 1.minutes, times[team2_id], 1.second
+    assert_in_delta 3.minute, times[team1], 1.second
+    assert_in_delta 1.minutes, times[team2], 1.second
   end
   
   test "it should show correct winner" do
@@ -72,7 +72,7 @@ class GameTest < ActiveSupport::TestCase
     game.reload
     game.abort!
 
-    assert_equal team2.id, game.winning_team
+    assert_equal team2, game.winning_team
   end
   
   test "it should ignore previous games" do
@@ -89,7 +89,7 @@ class GameTest < ActiveSupport::TestCase
     game1.abort!
     
     game1.reload
-    assert_equal runner1.current_team.id, game1.winning_team
+    assert_equal runner1.current_team, game1.winning_team
     
     game2 = Game.create!
     node.game = game2
@@ -114,7 +114,7 @@ class GameTest < ActiveSupport::TestCase
     Timecop.travel(Time.now + 1.minute)
     game2.abort!
     
-    assert_equal runner2.current_team.id, game2.winning_team
+    assert_equal runner2.current_team, game2.winning_team
   end
   
   test "ending the game should update the aggregate time for the team" do
