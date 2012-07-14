@@ -1,10 +1,10 @@
 <h3><%= @node.name %></h3>
 <p id="notice"><%= notice %></p>
-<p>Size: <%= @node.codes.size %></p>
+<p>Size: <%= @node.codes.size + 1 %></p>
 <hr />
 <p>Paste this code into Arduino:</p>
 <p class="arduino_code">char codeArray[<%= @node.codes.size + 1 %>][5] ={<br />
-{"<%= @node.name[0..3].upcase %>"}<br />
+{"<%= @node.name[0..3].upcase %>"},<br />
 <% @node.codes.each do |code| %>
 {"<%= code.contents %>"},<br />
 <% end %>};</p>
