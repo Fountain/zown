@@ -169,9 +169,9 @@ class Game < ActiveRecord::Base
     # create team times holder
     times = {}
     self.teams.each {|team| times[team] = 0}
-    # run cumulative_time on each
+    # run cumulative_times on each
     nodes.each do |node|
-      node_times = node.cumulative_time
+      node_times = node.cumulative_times
       # add up cumulative times and assign to each team
       node_times.each {|team, time| times[team] += time }
     end

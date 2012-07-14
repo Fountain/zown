@@ -63,7 +63,7 @@ end
 Then /^team one should have a cumulative time in minutes of$/ do |table|
   # table is a Cucumber::Ast::Table
   table.raw.each do |row|
-    times = @node.cumulative_time
+    times = @node.cumulative_times
     team1 = @game.teams[0]
     team1_time = times[team1]
     team1_time.should == row.first.to_i.minutes

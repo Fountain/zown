@@ -55,4 +55,8 @@ class Runner < ActiveRecord::Base
     game.has_ended? ? nil : game
   end
   
+  def capture(node)
+    self.captures.create(:node => node, :game => self.current_game, :team => self.current_team)
+  end
+  
 end

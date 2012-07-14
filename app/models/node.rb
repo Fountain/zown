@@ -17,7 +17,7 @@ class Node < ActiveRecord::Base
   
   # get the cumulative time for node
   # TODO add temporary capture at end for measuring purposes
-  def cumulative_time
+  def cumulative_times
     # get all captures with in the current game 
     captures = self.captures.where :game_id => self.game.id
     # create a time holder for each team
