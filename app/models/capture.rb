@@ -40,9 +40,10 @@ class Capture < ActiveRecord::Base
   end
   
   def update_last_team_aggregate
-    last_capture = self.node.captures.last
+    # get the most recent capture
+    last_capture = self.node.captures.order('created_at DESC').first
     if last_capture
-      team = last_capture.team
+      team = last_capture.team.reload
       
       duration = Time.now - last_capture.created_at
       team.aggregate_time += duration

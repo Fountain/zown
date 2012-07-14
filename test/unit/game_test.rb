@@ -66,7 +66,7 @@ class GameTest < ActiveSupport::TestCase
     runner1.capture node
     Timecop.travel(Time.now + 1.minute)
     runner2.capture node
-    Timecop.travel(Time.now + 7.minutes)
+    Timecop.travel(Time.now + 2.minutes)
     runner1.capture node
     game.abort!
     
