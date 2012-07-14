@@ -10,12 +10,16 @@ class Node < ActiveRecord::Base
   
   
   def current_team
-    last_capture = self.current_game_captures.last
+    last_capture = self.last_capture
     last_capture.nil? ? nil : last_capture.team
   end
   
   def current_game_captures
     self.captures.where :game_id => self.game
+  end
+  
+  def last_capture
+    self.current_game_captures.order('created_at DESC').first
   end
   
   # get the cumulative time for node

@@ -39,7 +39,7 @@ class Game < ActiveRecord::Base
     
     # for each node in current game
     self.nodes.each do |node|
-      last_capture = self.captures.last
+      last_capture = node.last_capture
       if last_capture
         time_to_add = current_time - last_capture.created_at  
         # update the aggregate time
