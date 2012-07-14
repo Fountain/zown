@@ -111,7 +111,7 @@ class Node < ActiveRecord::Base
    end
   
   def current_owner
-    capture = self.latest_capture
+    capture = self.last_capture
     capture.team if capture
   end
 end

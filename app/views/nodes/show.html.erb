@@ -3,7 +3,8 @@
 <p>Size: <%= @node.codes.size %></p>
 <hr />
 <p>Paste this code into Arduino:</p>
-<p class="arduino_code">char testArray[<%= @node.codes.size %>][5] ={<br />
+<p class="arduino_code">char codeArray[<%= @node.codes.size + 1 %>][5] ={<br />
+{"<%= @node.name[0..3].upcase %>"}<br />
 <% @node.codes.each do |code| %>
 {"<%= code.contents %>"},<br />
 <% end %>};</p>

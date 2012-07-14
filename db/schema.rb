@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110616005000) do
+ActiveRecord::Schema.define(:version => 20120714062844) do
 
   create_table "captures", :force => true do |t|
     t.integer  "game_id"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20110616005000) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "team_id"
+    t.string   "code"
   end
 
   create_table "clusters", :force => true do |t|

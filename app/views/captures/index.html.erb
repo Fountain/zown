@@ -20,7 +20,7 @@
 	<td><%= capture.game.is_active? if capture.game %></td>
 	<td><%= capture.created_at.strftime("%I:%M%p") %></td>
     <td><%= link_to 'E', edit_capture_path(capture) %></td>
-    <td><%= link_to 'X', capture, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'X', 'captures/' + capture.id.to_s, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

@@ -84,7 +84,7 @@ class ApiController < ApplicationController
       end
       # if code is good, create code
       # TODO abstract to Runner class (take a code as argument)
-      capture = Capture.new(:node => node, :runner => runner, :game => game, :team => runner.current_team)
+      capture = Capture.new(:node => node, :runner => runner, :game => game, :team => runner.current_team, :code => code)
       if capture.save
         # returns true        
       else
