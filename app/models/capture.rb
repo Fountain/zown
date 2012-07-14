@@ -41,7 +41,7 @@ class Capture < ActiveRecord::Base
   
   def update_last_team_aggregate
     # get the most recent capture
-    last_capture = self.node.captures.order('created_at DESC').first
+    last_capture = self.node.current_game_captures.order('created_at DESC').first
     if last_capture
       team = last_capture.team.reload
       

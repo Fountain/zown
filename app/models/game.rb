@@ -79,9 +79,16 @@ class Game < ActiveRecord::Base
   end
   
   def abort!
-    self.end_time = Time.now
+    end_time = Time.now
+    self.end_time = end_time
     self.save!
+    
+    self.current_aggregate_times.each do |team_id, time|
+      Team.find(team_id).update_attribute('aggregate_time', time)
+    end
+    
     self.reset_nodes
+    
     puts "The game has ended at + #{self.end_time}"
   end
   
@@ -129,7 +136,6 @@ class Game < ActiveRecord::Base
   end
 
   def winning_team
-    puts self.current_aggregate_times.inspect
     # return the team with the max aggregate time
     self.current_aggregate_times.max{|a,b| a[1] <=> b[1]}[0]
   end
