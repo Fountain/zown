@@ -1,6 +1,6 @@
 class AddCodeToCapture < ActiveRecord::Migration
   def self.up
-    add_column :captures, :code, :string
+    add_column :captures, :code, :integer
   end
 
   def self.down
