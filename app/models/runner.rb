@@ -1,7 +1,7 @@
 class Runner < ActiveRecord::Base
   has_and_belongs_to_many :teams
   has_many :captures
-
+  
   # couldn't figure out how to retrieve the user's games through associations,
   # so just collect the games from each team here
   def games

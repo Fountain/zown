@@ -11,7 +11,7 @@
 
 <% @runners.each do |runner| %>
   <tr class="<%= cycle("even", "odd") %>">
-	<td><%= runner.mobile_number %></td>
+	<td>Runner <%= runner.id %> (<%= runner.mobile_number[-4..-1] %>)</td>
 	<td><%= runner.current_team if runner.current_team %></td>
 	<td><%= link_to 'Show', runner %></td>
     <td><%= link_to 'Edit', edit_runner_path(runner) %></td>

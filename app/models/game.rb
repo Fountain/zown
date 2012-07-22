@@ -69,7 +69,7 @@ class Game < ActiveRecord::Base
     self.abort!
     
     # message all runners that the game is over
-    outgoing_message = "The game is over. #{self.winning_team.name} has won."
+    outgoing_message = "The game is over. #{self.winning_team} has won."
     self.runners.each do |runner|
       logger.debug "Game attributes hash: #{runner.mobile_number}" 
       Messaging.outgoing_sms(runner.mobile_number, outgoing_message)

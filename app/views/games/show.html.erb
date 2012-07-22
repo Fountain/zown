@@ -53,7 +53,7 @@
 
 	<% team.runners.each do |runner| %>
 	  <tr class="<%= cycle("even", "odd") %>">
-		<td><%= runner.mobile_number %></td>
+		<td>Runner <%= runner.id %> (<%= runner.mobile_number[-4..-1] %>)</td>
 		<td><%= runner.captures_in_current_game.size %></td>	  
 	  </tr>
 	<% end %>
