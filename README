@@ -17,9 +17,6 @@ repeat game - creates a new game with the same variables as the last
 balance teams - balances the number of players on each team
 
 TODO
-* system thinks codes are already being used
-* timing is not correct
-
 * Add repeat game
-* Add security
-* implement 'choose game' if multiple games exist
+* Add security toggle
+* Add 'choose game' if multiple games exist

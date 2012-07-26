@@ -14,7 +14,7 @@
 <% @captures.each do |capture| %>
   <tr class="<%= cycle("even", "odd") %>">
 	<td><%= capture.id %></td>
-    <td><%= capture.runner.mobile_number if capture.runner %></td>
+    <td>Runner <%= capture.runner.id if capture.runner %> (<%= capture.runner.mobile_number[-4..-1]  if capture.runner %>)</td>
 	<td><%= capture.node.name %></td>
 	<td><%= capture.game.id if capture.game %></td>
 	<td><%= capture.game.is_active? if capture.game %></td>
